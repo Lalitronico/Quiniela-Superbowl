@@ -15,5 +15,24 @@ export default defineConfig({
         ws: true
       }
     }
+  },
+  build: {
+    // Optimize chunk splitting for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunk for React ecosystem
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // Animation library (large, separate chunk)
+          'framer': ['framer-motion']
+        }
+      }
+    },
+    // Enable source maps for debugging in production
+    sourcemap: false,
+    // Minification
+    minify: 'esbuild',
+    // Target modern browsers for smaller bundles
+    target: 'es2020'
   }
 })
