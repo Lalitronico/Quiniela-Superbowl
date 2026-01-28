@@ -49,7 +49,7 @@ export default function StepScore() {
 
   return (
     <StepLayout
-      title="¿CUAL SERA EL MARCADOR?"
+      title="¿CUÁL SERÁ EL MARCADOR?"
       subtitle="Predice los puntos finales de cada equipo"
     >
       <div className="max-w-2xl mx-auto">

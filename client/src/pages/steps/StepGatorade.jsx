@@ -10,7 +10,7 @@ const GATORADE_OPTIONS = [
   { id: 'rojo', name: 'Rojo', color: '#FF0033', emoji: '🔴' },
   { id: 'morado', name: 'Morado', color: '#9933FF', emoji: '🟣' },
   { id: 'transparente', name: 'Transparente', color: '#E8E8E8', emoji: '⚪' },
-  { id: 'ninguno', name: 'No habra', color: '#666666', emoji: '❌' }
+  { id: 'ninguno', name: 'No habrá', color: '#666666', emoji: '❌' }
 ]
 
 function ColorOption({ option, isSelected, onSelect }) {
@@ -48,7 +48,7 @@ export default function StepGatorade() {
   return (
     <StepLayout
       title="¿COLOR DEL GATORADE?"
-      subtitle="¿De que color sera el Gatorade que le echaran al entrenador ganador?"
+      subtitle="¿De qué color será el Gatorade que le echarán al entrenador ganador?"
     >
       <div className="max-w-2xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -75,7 +75,7 @@ export default function StepGatorade() {
           transition={{ delay: 0.5 }}
         >
           <p className="font-body text-sm" style={{ color: 'var(--ink-muted)' }}>
-            Tradicion del Super Bowl desde 1987
+            Tradición del Super Bowl desde 1987
           </p>
         </motion.div>
       </div>

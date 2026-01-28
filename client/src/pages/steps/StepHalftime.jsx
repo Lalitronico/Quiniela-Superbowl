@@ -7,7 +7,7 @@ const POPULAR_SONGS = [
   'Titi Me Pregunto',
   'Me Porto Bonito',
   'Callaita',
-  'La Cancion',
+  'La Canción',
   'Safaera',
   'Yonaguni',
   'Moscow Mule'
@@ -23,7 +23,7 @@ export default function StepHalftime() {
   return (
     <StepLayout
       title="MEDIO TIEMPO"
-      subtitle="¿Cual sera la primera cancion de Bad Bunny?"
+      subtitle="¿Cuál será la primera canción de Bad Bunny?"
     >
       <div className="max-w-xl mx-auto">
         {/* Artist Info */}
@@ -71,14 +71,14 @@ export default function StepHalftime() {
           transition={{ delay: 0.3 }}
         >
           <p className="font-heading text-sm mb-3 text-center" style={{ color: 'var(--ink-muted)' }}>
-            O ESCRIBE TU PREDICCION
+            O ESCRIBE TU PREDICCIÓN
           </p>
           <input
             type="text"
             className="input text-center"
             value={predictions.halftime}
             onChange={(e) => updatePrediction('halftime', e.target.value)}
-            placeholder="Nombre de la cancion..."
+            placeholder="Nombre de la canción..."
           />
         </motion.div>
 

@@ -52,7 +52,7 @@ export default function Register() {
     if (!formData.email.trim()) {
       newErrors.email = 'El email es requerido'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Ingresa un email valido'
+      newErrors.email = 'Ingresa un email válido'
     }
 
     setErrors(newErrors)
@@ -136,11 +136,11 @@ export default function Register() {
               />
             </motion.div>
             <h1 className="font-display text-3xl md:text-4xl text-white mb-2">
-              UNETE A LA QUINIELA
+              ÚNETE A LA QUINIELA
             </h1>
             <p className="font-body text-white/50">
-              {step === 1 && 'Como te llamas?'}
-              {step === 2 && 'Cual es tu email?'}
+              {step === 1 && '¿Cómo te llamas?'}
+              {step === 2 && '¿Cuál es tu email?'}
               {step === 3 && 'Elige tu avatar'}
             </p>
           </motion.div>
@@ -165,7 +165,7 @@ export default function Register() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Ej: Juan Perez"
+                      placeholder="Ej: Juan Pérez"
                       className="input-field text-xl"
                       autoFocus
                     />
@@ -240,7 +240,7 @@ export default function Register() {
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                       </svg>
-                      Atras
+                      Atrás
                     </motion.button>
                     <motion.button
                       type="button"
@@ -325,7 +325,7 @@ export default function Register() {
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                       </svg>
-                      Atras
+                      Atrás
                     </motion.button>
                     <motion.button
                       type="submit"
@@ -362,7 +362,7 @@ export default function Register() {
             transition={{ delay: 0.5 }}
             className="text-center text-white/30 text-xs mt-8"
           >
-            Las predicciones se bloquearan al inicio del partido
+            Las predicciones se bloquearán al inicio del partido
           </motion.p>
         </div>
       </motion.div>

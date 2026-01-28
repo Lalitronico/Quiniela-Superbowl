@@ -4,10 +4,10 @@ import { useWizard } from '../../context/WizardContext'
 import StepLayout from '../../components/wizard/StepLayout'
 
 const ANTHEM_PRESETS = [
-  { value: '90', label: 'Menos de 90s', description: 'Muy rapido' },
+  { value: '90', label: 'Menos de 90s', description: 'Muy rápido' },
   { value: '105', label: '90-120s', description: 'Normal' },
   { value: '130', label: '120-140s', description: 'Largo' },
-  { value: '150', label: 'Mas de 140s', description: 'Muy largo' }
+  { value: '150', label: 'Más de 140s', description: 'Muy largo' }
 ]
 
 export default function StepAnthem() {
@@ -22,8 +22,8 @@ export default function StepAnthem() {
 
   return (
     <StepLayout
-      title="¿DURACION DEL HIMNO?"
-      subtitle="¿Cuantos segundos durara el himno nacional?"
+      title="¿DURACIÓN DEL HIMNO?"
+      subtitle="¿Cuántos segundos durará el himno nacional?"
     >
       <div className="max-w-xl mx-auto">
         {/* Preset Options */}
@@ -104,10 +104,10 @@ export default function StepAnthem() {
           transition={{ delay: 0.5 }}
         >
           <p className="font-body text-sm" style={{ color: 'var(--ink-muted)' }}>
-            Promedio historico: <strong style={{ color: 'var(--ink)' }}>110 segundos</strong>
+            Promedio histórico: <strong style={{ color: 'var(--ink)' }}>110 segundos</strong>
           </p>
           <p className="font-body text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>
-            Mas largo: Whitney Houston (1991) con 139s
+            Más largo: Whitney Houston (1991) con 139s
           </p>
         </motion.div>
       </div>

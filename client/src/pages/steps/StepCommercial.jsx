@@ -49,7 +49,7 @@ export default function StepCommercial() {
   return (
     <StepLayout
       title="¿MEJOR COMERCIAL?"
-      subtitle="¿Cual marca tendra el mejor comercial segun USA Today Ad Meter?"
+      subtitle="¿Cuál marca tendrá el mejor comercial según USA Today Ad Meter?"
     >
       <div className="max-w-2xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

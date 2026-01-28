@@ -73,7 +73,7 @@ function PredictionCard({ title, icon, value, subValue, color, delay, onEdit, ch
       <div className="prediction-card-content">
         {children || (
           <>
-            <span className="prediction-card-value">{value || 'Sin responder'}</span>
+            <span className="prediction-card-value">{value || 'Sin seleccionar'}</span>
             {subValue && <span className="prediction-card-subvalue">{subValue}</span>}
           </>
         )}
@@ -93,7 +93,7 @@ function ChampionCard({ team, onEdit, delay }) {
         transition={{ delay }}
       >
         <div className="champion-card-content">
-          <span className="champion-label">CAMPEON ELEGIDO</span>
+          <span className="champion-label">CAMPEÓN ELEGIDO</span>
           <span className="champion-empty">Sin seleccionar</span>
         </div>
         <button className="champion-edit-btn" onClick={onEdit}>ELEGIR</button>
@@ -114,7 +114,7 @@ function ChampionCard({ team, onEdit, delay }) {
       <div className="champion-glow" />
 
       <div className="champion-card-content">
-        <span className="champion-label">CAMPEON ELEGIDO</span>
+        <span className="champion-label">CAMPEÓN ELEGIDO</span>
 
         <div className="champion-team">
           <motion.img

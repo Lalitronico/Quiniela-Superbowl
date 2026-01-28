@@ -68,10 +68,10 @@ function TeamCard({ teamId, team, logo, isSelected, onSelect }) {
         {isSelected ? (
           <>
             <span className="check-mark">✓</span>
-            <span>CAMPEON ELEGIDO</span>
+            <span>CAMPEÓN ELEGIDO</span>
           </>
         ) : (
-          <span>ELEGIR CAMPEON</span>
+          <span>ELEGIR CAMPEÓN</span>
         )}
       </motion.div>
     </motion.button>
@@ -100,8 +100,8 @@ export default function StepWinner() {
 
   return (
     <StepLayout
-      title="¿QUIEN SERA CAMPEON?"
-      subtitle="Elige al equipo que crees ganara el Super Bowl LX"
+      title="¿QUIÉN SERÁ CAMPEÓN?"
+      subtitle="Elige al equipo que crees ganará el Super Bowl LX"
     >
       <div className="winner-selection">
         <div className="teams-grid">

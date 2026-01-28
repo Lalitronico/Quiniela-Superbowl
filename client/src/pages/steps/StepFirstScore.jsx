@@ -51,8 +51,8 @@ export default function StepFirstScore() {
 
   return (
     <StepLayout
-      title="¿QUIEN ANOTA PRIMERO?"
-      subtitle="Selecciona el equipo que crees anotara los primeros puntos"
+      title="¿QUIÉN ANOTA PRIMERO?"
+      subtitle="Selecciona el equipo que crees anotará los primeros puntos"
     >
       <div className="max-w-3xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

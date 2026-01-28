@@ -145,8 +145,8 @@ export default function StepMVP() {
 
   return (
     <StepLayout
-      title="¿QUIEN SERA MVP?"
-      subtitle="Selecciona al jugador mas valioso del partido"
+      title="¿QUIÉN SERÁ MVP?"
+      subtitle="Selecciona al jugador más valioso del partido"
     >
       <div className="max-w-4xl mx-auto">
         {/* Team Labels */}
