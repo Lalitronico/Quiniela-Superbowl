@@ -149,8 +149,8 @@ export default function StepMVP() {
       subtitle="Selecciona al jugador más valioso del partido"
     >
       <div className="max-w-4xl mx-auto">
-        {/* Team Labels */}
-        <div className="flex justify-center gap-8 mb-6">
+        {/* Team Labels - Hidden on mobile */}
+        <div className="hidden md:flex justify-center gap-8 mb-6">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ background: 'var(--cmyk-cyan)' }} />
             <span className="font-heading text-sm" style={{ color: 'var(--ink-muted)' }}>SEAHAWKS</span>
@@ -162,7 +162,7 @@ export default function StepMVP() {
         </div>
 
         {/* Player Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
           {MVP_OPTIONS.map((player, index) => (
             <motion.div
               key={player.id}
@@ -189,9 +189,9 @@ export default function StepMVP() {
           </motion.div>
         </div>
 
-        {/* Info */}
+        {/* Info - Hidden on mobile */}
         <motion.p
-          className="text-center mt-8 font-body text-sm"
+          className="hidden md:block text-center mt-8 font-body text-sm"
           style={{ color: 'var(--ink-muted)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
