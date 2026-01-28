@@ -59,12 +59,12 @@ export default function StepLayout({ children, title, subtitle }) {
 
       {/* Header */}
       <header className="step-header">
-        <div className="container flex items-center justify-between h-14">
+        <div className="container flex items-center justify-between h-12 md:h-14">
           <button
             onClick={() => navigate('/')}
             className="logo-link"
           >
-            <span className="font-display text-lg">QUINIELA</span>
+            <span className="font-display text-base md:text-lg">QUINIELA</span>
             <span className="logo-year-sm">2026</span>
           </button>
           <div className="event-badge-sm">SUPER BOWL LX</div>
@@ -78,7 +78,7 @@ export default function StepLayout({ children, title, subtitle }) {
 
       {/* Main Content */}
       <main className="step-main">
-        <div className="container relative z-10 py-6 md:py-10">
+        <div className="container relative z-10 py-4 md:py-10">
           {/* Step Header */}
           <motion.div
             className="text-center mb-8 md:mb-10"
