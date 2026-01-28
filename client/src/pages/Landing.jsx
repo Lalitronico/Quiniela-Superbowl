@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import CinematicIntro from '../components/CinematicIntro'
 
 // Team Configuration
 const TEAMS = {
@@ -10,9 +9,6 @@ const TEAMS = {
     name: 'SEAHAWKS',
     city: 'SEATTLE',
     conference: 'NFC',
-    primaryColor: '#002244',
-    secondaryColor: '#69BE28',
-    accentColor: '#A5ACAF',
     record: '14-3'
   },
   afc: {
@@ -20,9 +16,6 @@ const TEAMS = {
     name: 'PATRIOTS',
     city: 'NEW ENGLAND',
     conference: 'AFC',
-    primaryColor: '#002244',
-    secondaryColor: '#C60C30',
-    accentColor: '#B0B7BC',
     record: '13-4'
   }
 }
@@ -84,9 +77,36 @@ const CountdownTimer = () => {
   )
 }
 
+// Mobile Team Card Component
+function MobileTeamCard({ team, conference, delay, side }) {
+  return (
+    <motion.div
+      className={`mobile-team-card mobile-team-${side}`}
+      initial={{ opacity: 0, x: side === 'nfc' ? -50 : 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay, duration: 0.6, type: 'spring' }}
+    >
+      <div className="mobile-team-badge">
+        <span>{conference}</span>
+        <span className="mobile-team-record">{team.record}</span>
+      </div>
+      <motion.img
+        src={team.logo}
+        alt={team.name}
+        className="mobile-team-logo"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      />
+      <div className="mobile-team-info">
+        <span className="mobile-team-city">{team.city}</span>
+        <span className="mobile-team-name">{team.name}</span>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Landing() {
   const navigate = useNavigate()
-  const [introComplete, setIntroComplete] = useState(false)
 
   const handleStart = () => {
     navigate('/quiniela')
@@ -94,48 +114,27 @@ export default function Landing() {
 
   return (
     <div className="landing-split">
-      {/* Cinematic Intro */}
-      <AnimatePresence>
-        {!introComplete && (
-          <motion.div
-            className="intro-overlay"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <CinematicIntro onComplete={() => setIntroComplete(true)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Split Layout */}
-      <motion.div
-        className="landing-split-container"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: introComplete ? 1 : 0 }}
-        transition={{ duration: 0.8 }}
-      >
+      {/* ============ DESKTOP VERSION ============ */}
+      <div className="landing-split-container desktop-only">
         {/* Left Side - NFC Team */}
         <motion.div
           className="team-half team-half-nfc"
           initial={{ x: '-100%' }}
-          animate={introComplete ? { x: 0 } : {}}
-          transition={{ delay: 0.2, duration: 0.8, type: 'spring', damping: 20 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.8, type: 'spring', damping: 20 }}
         >
-          {/* Background Effects */}
           <div className="team-half-bg">
             <div className="team-half-gradient" />
             <div className="team-half-pattern" />
             <div className="team-half-glow" />
           </div>
 
-          {/* Team Content */}
           <div className="team-half-content">
             <motion.div
               className="team-conference-badge"
               initial={{ opacity: 0, y: -20 }}
-              animate={introComplete ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
               <span>{TEAMS.nfc.conference}</span>
               <span className="team-record-badge">{TEAMS.nfc.record}</span>
@@ -144,8 +143,8 @@ export default function Landing() {
             <motion.div
               className="team-logo-large"
               initial={{ opacity: 0, scale: 0.5 }}
-              animate={introComplete ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.4, duration: 0.6, type: 'spring' }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
               whileHover={{ scale: 1.05, rotate: -2 }}
             >
               <div className="team-logo-ring-outer" />
@@ -156,8 +155,8 @@ export default function Landing() {
             <motion.div
               className="team-name-large"
               initial={{ opacity: 0, y: 20 }}
-              animate={introComplete ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
             >
               <span className="team-city-large">{TEAMS.nfc.city}</span>
               <span className="team-title-large">{TEAMS.nfc.name}</span>
@@ -166,8 +165,8 @@ export default function Landing() {
             <motion.div
               className="team-seed-badge"
               initial={{ opacity: 0 }}
-              animate={introComplete ? { opacity: 1 } : {}}
-              transition={{ delay: 0.7, duration: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               #1 SEED NFC
             </motion.div>
@@ -176,12 +175,11 @@ export default function Landing() {
 
         {/* Center Overlay */}
         <div className="center-overlay">
-          {/* Top Section */}
           <motion.div
             className="center-top"
             initial={{ opacity: 0, y: -30 }}
-            animate={introComplete ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
           >
             <div className="brand-logo">
               <span className="brand-quiniela">QUINIELA</span>
@@ -189,12 +187,11 @@ export default function Landing() {
             </div>
           </motion.div>
 
-          {/* Center Section - VS and Logo */}
           <motion.div
             className="center-middle"
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={introComplete ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.5, duration: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
           >
             <div className="nfl-logo-container">
               <div className="nfl-logo-glow" />
@@ -217,12 +214,11 @@ export default function Landing() {
             </div>
           </motion.div>
 
-          {/* Bottom Section - CTA */}
           <motion.div
             className="center-bottom"
             initial={{ opacity: 0, y: 30 }}
-            animate={introComplete ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.7, duration: 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
           >
             <CountdownTimer />
 
@@ -257,23 +253,21 @@ export default function Landing() {
         <motion.div
           className="team-half team-half-afc"
           initial={{ x: '100%' }}
-          animate={introComplete ? { x: 0 } : {}}
-          transition={{ delay: 0.2, duration: 0.8, type: 'spring', damping: 20 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.8, type: 'spring', damping: 20 }}
         >
-          {/* Background Effects */}
           <div className="team-half-bg">
             <div className="team-half-gradient" />
             <div className="team-half-pattern" />
             <div className="team-half-glow" />
           </div>
 
-          {/* Team Content */}
           <div className="team-half-content">
             <motion.div
               className="team-conference-badge"
               initial={{ opacity: 0, y: -20 }}
-              animate={introComplete ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
               <span>{TEAMS.afc.conference}</span>
               <span className="team-record-badge">{TEAMS.afc.record}</span>
@@ -282,8 +276,8 @@ export default function Landing() {
             <motion.div
               className="team-logo-large"
               initial={{ opacity: 0, scale: 0.5 }}
-              animate={introComplete ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.4, duration: 0.6, type: 'spring' }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
               whileHover={{ scale: 1.05, rotate: 2 }}
             >
               <div className="team-logo-ring-outer" />
@@ -294,8 +288,8 @@ export default function Landing() {
             <motion.div
               className="team-name-large"
               initial={{ opacity: 0, y: 20 }}
-              animate={introComplete ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
             >
               <span className="team-city-large">{TEAMS.afc.city}</span>
               <span className="team-title-large">{TEAMS.afc.name}</span>
@@ -304,14 +298,119 @@ export default function Landing() {
             <motion.div
               className="team-seed-badge"
               initial={{ opacity: 0 }}
-              animate={introComplete ? { opacity: 1 } : {}}
-              transition={{ delay: 0.7, duration: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               #1 SEED AFC
             </motion.div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
+
+      {/* ============ MOBILE VERSION ============ */}
+      <div className="mobile-landing mobile-only">
+        {/* Background */}
+        <div className="mobile-bg">
+          <div className="mobile-bg-gradient" />
+          <div className="mobile-bg-pattern" />
+        </div>
+
+        {/* Header */}
+        <motion.div
+          className="mobile-header"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="mobile-brand">
+            <span className="mobile-brand-text">QUINIELA</span>
+            <span className="mobile-brand-year">2026</span>
+          </div>
+        </motion.div>
+
+        {/* Teams Section */}
+        <div className="mobile-teams-section">
+          <MobileTeamCard
+            team={TEAMS.nfc}
+            conference="NFC"
+            delay={0.2}
+            side="nfc"
+          />
+
+          {/* VS Badge */}
+          <motion.div
+            className="mobile-vs-container"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
+          >
+            <div className="mobile-vs-badge">
+              <span>VS</span>
+            </div>
+          </motion.div>
+
+          <MobileTeamCard
+            team={TEAMS.afc}
+            conference="AFC"
+            delay={0.3}
+            side="afc"
+          />
+        </div>
+
+        {/* Center Content */}
+        <motion.div
+          className="mobile-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="mobile-nfl-logo">
+            <img src={NFL_LOGO} alt="NFL" />
+          </div>
+
+          <div className="mobile-super-bowl">
+            <span className="mobile-sb-label">SUPER BOWL</span>
+            <span className="mobile-sb-numeral">LX</span>
+          </div>
+
+          <h1 className="mobile-question">¿QUIÉN GANARÁ?</h1>
+        </motion.div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          className="mobile-bottom"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <CountdownTimer />
+
+          <motion.button
+            className="mobile-cta-btn"
+            onClick={handleStart}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span>PARTICIPA AHORA</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </motion.button>
+
+          <div className="mobile-cta-info">
+            <span>8 preguntas</span>
+            <span className="mobile-dot">•</span>
+            <span>2 minutos</span>
+            <span className="mobile-dot">•</span>
+            <span>Premios</span>
+          </div>
+
+          <div className="mobile-event">
+            <span>📍 Levi's Stadium</span>
+            <span>📅 8 Feb, 2026</span>
+          </div>
+        </motion.div>
+      </div>
     </div>
   )
 }
