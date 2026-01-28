@@ -154,7 +154,7 @@ export default function Landing() {
             transition={{ delay: 0.1, duration: 0.6 }}
           >
             <div className="brand-logo">
-              <span className="brand-quiniela">QUINIELA</span>
+              <span className="brand-quiniela">SUPER QUINIELA</span>
               <span className="brand-year-badge">2026</span>
             </div>
           </motion.div>

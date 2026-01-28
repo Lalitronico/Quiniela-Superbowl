@@ -64,7 +64,7 @@ export default function StepLayout({ children, title, subtitle }) {
             onClick={() => navigate('/')}
             className="logo-link"
           >
-            <span className="font-display text-base md:text-lg">QUINIELA</span>
+            <span className="font-display text-sm md:text-lg">SUPER QUINIELA</span>
             <span className="logo-year-sm">2026</span>
           </button>
           <div className="event-badge-sm">SUPER BOWL LX</div>

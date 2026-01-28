@@ -3085,8 +3085,16 @@ body::before {
   top: 0;
   z-index: 50;
   padding: 0.75rem 0;
+  margin-bottom: 1rem;
   background: var(--bg-cream);
   border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .progress-section {
+    padding: 0.5rem 0;
+    margin-bottom: 0.75rem;
+  }
 }
 
 /* Step Main */
@@ -5653,8 +5661,8 @@ body::before {
   }
 
   .team-half-content {
-    padding: 1rem 0.5rem;
-    gap: 0.75rem;
+    padding: 1rem 0.25rem;
+    gap: 0.5rem;
     justify-content: center;
   }
 
@@ -5668,115 +5676,115 @@ body::before {
   }
 
   .team-logo-large {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
   }
 
   .team-logo-large img {
-    width: 85%;
-    height: 85%;
+    width: 90%;
+    height: 90%;
   }
 
   .team-title-large {
-    font-size: 1.1rem;
+    font-size: 1.35rem;
   }
 
   .team-city-large {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 
   .center-overlay {
-    width: 55%;
-    max-width: 240px;
-    padding: 1rem 0.5rem;
+    width: 48%;
+    max-width: 220px;
+    padding: 0.75rem 0.25rem;
   }
 
   .center-top {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .center-middle {
-    gap: 0.5rem;
-  }
-
-  .center-bottom {
-    gap: 0.75rem;
-  }
-
-  .nfl-logo {
-    width: 60px;
-  }
-
-  .sb-label {
-    font-size: 0.6rem;
-  }
-
-  .sb-numeral {
-    font-size: 2.25rem;
-  }
-
-  .vs-diamond {
-    width: 50px;
-    height: 50px;
-    margin: 0.5rem 0;
-  }
-
-  .vs-diamond-inner span {
-    font-size: 1rem;
-  }
-
-  .main-question {
-    font-size: 1rem;
-  }
-
-  .brand-quiniela {
-    font-size: 1.25rem;
-  }
-
-  .brand-year-badge {
-    font-size: 0.6rem;
-    padding: 0.2rem 0.4rem;
-  }
-
-  .countdown-split {
-    padding: 0.5rem 0.75rem;
-  }
-
-  .countdown-split-label {
-    font-size: 0.5rem;
-  }
-
-  .countdown-split-number {
-    font-size: 1.25rem;
-  }
-
-  .countdown-split-text {
-    font-size: 0.4rem;
-  }
-
-  .countdown-split-sep {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .cta-btn-split {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
-    gap: 0.5rem;
-  }
-
-  .cta-btn-split svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .cta-info {
-    font-size: 0.55rem;
     gap: 0.35rem;
   }
 
-  .event-details {
+  .center-bottom {
+    gap: 0.5rem;
+  }
+
+  .nfl-logo {
+    width: 55px;
+  }
+
+  .sb-label {
+    font-size: 0.55rem;
+  }
+
+  .sb-numeral {
+    font-size: 2rem;
+  }
+
+  .vs-diamond {
+    width: 45px;
+    height: 45px;
+    margin: 0.35rem 0;
+  }
+
+  .vs-diamond-inner span {
+    font-size: 0.9rem;
+  }
+
+  .main-question {
+    font-size: 0.95rem;
+  }
+
+  .brand-quiniela {
+    font-size: 1rem;
+  }
+
+  .brand-year-badge {
+    font-size: 0.55rem;
+    padding: 0.15rem 0.35rem;
+  }
+
+  .countdown-split {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .countdown-split-label {
+    font-size: 0.45rem;
+  }
+
+  .countdown-split-number {
+    font-size: 1.1rem;
+  }
+
+  .countdown-split-text {
+    font-size: 0.35rem;
+  }
+
+  .countdown-split-sep {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cta-btn-split {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.85rem;
+    gap: 0.4rem;
+  }
+
+  .cta-btn-split svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .cta-info {
     font-size: 0.5rem;
+    gap: 0.3rem;
+  }
+
+  .event-details {
+    font-size: 0.45rem;
     gap: 0.15rem;
   }
 
@@ -5788,68 +5796,68 @@ body::before {
 
 @media (max-width: 480px) {
   .team-logo-large {
-    width: 75px;
-    height: 75px;
+    width: 90px;
+    height: 90px;
   }
 
   .team-title-large {
-    font-size: 0.95rem;
+    font-size: 1.15rem;
   }
 
   .team-city-large {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
   }
 
   .center-overlay {
-    width: 50%;
-    max-width: 200px;
-    padding: 0.75rem 0.35rem;
+    width: 46%;
+    max-width: 180px;
+    padding: 0.5rem 0.2rem;
   }
 
   .nfl-logo {
-    width: 50px;
+    width: 45px;
   }
 
   .sb-numeral {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .vs-diamond {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
 
   .vs-diamond-inner span {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .main-question {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .brand-quiniela {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
 
   .countdown-split {
-    padding: 0.4rem 0.6rem;
+    padding: 0.35rem 0.5rem;
   }
 
   .countdown-split-number {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .cta-btn-split {
-    padding: 0.65rem 1rem;
-    font-size: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.7rem;
   }
 
   .cta-info {
-    font-size: 0.5rem;
+    font-size: 0.45rem;
   }
 
   .event-details {
-    font-size: 0.45rem;
+    font-size: 0.4rem;
   }
 }
 
