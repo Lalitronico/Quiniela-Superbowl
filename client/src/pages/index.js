@@ -1,0 +1,5 @@
+export { default as Home } from './Home'
+export { default as Register } from './Register'
+export { default as Predictions } from './Predictions'
+export { default as Leaderboard } from './Leaderboard'
+export { default as Admin } from './Admin'
