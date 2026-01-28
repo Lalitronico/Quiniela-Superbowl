@@ -5653,130 +5653,130 @@ body::before {
   }
 
   .team-half-content {
-    padding: 0.75rem;
-    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    gap: 0.75rem;
+    justify-content: center;
   }
 
-  .team-logo-large {
-    width: 100px;
-    height: 100px;
-  }
-
-  .team-logo-large img {
-    width: 80%;
-    height: 80%;
-  }
-
-  .team-title-large {
-    font-size: 1.25rem;
-  }
-
-  .team-city-large {
-    font-size: 0.5rem;
-  }
-
+  /* Hide some elements on mobile to reduce clutter */
   .team-conference-badge {
-    padding: 0.25rem 0.5rem;
-    gap: 0.25rem;
-  }
-
-  .team-conference-badge span:first-child {
-    font-size: 0.65rem;
-  }
-
-  .team-record-badge {
-    font-size: 0.55rem;
-    padding-left: 0.25rem;
+    display: none;
   }
 
   .team-seed-badge {
-    font-size: 0.5rem;
-    padding: 0.2rem 0.5rem;
+    display: none;
+  }
+
+  .team-logo-large {
+    width: 90px;
+    height: 90px;
+  }
+
+  .team-logo-large img {
+    width: 85%;
+    height: 85%;
+  }
+
+  .team-title-large {
+    font-size: 1.1rem;
+  }
+
+  .team-city-large {
+    font-size: 0.55rem;
   }
 
   .center-overlay {
-    width: 50%;
-    max-width: 280px;
-    padding: 0.5rem;
+    width: 55%;
+    max-width: 240px;
+    padding: 1rem 0.5rem;
+  }
+
+  .center-top {
+    margin-bottom: 0.5rem;
   }
 
   .center-middle {
     gap: 0.5rem;
   }
 
+  .center-bottom {
+    gap: 0.75rem;
+  }
+
   .nfl-logo {
-    width: 50px;
+    width: 60px;
   }
 
   .sb-label {
-    font-size: 0.5rem;
+    font-size: 0.6rem;
   }
 
   .sb-numeral {
-    font-size: 1.75rem;
+    font-size: 2.25rem;
   }
 
   .vs-diamond {
-    width: 40px;
-    height: 40px;
-    margin: 0.25rem 0;
+    width: 50px;
+    height: 50px;
+    margin: 0.5rem 0;
   }
 
   .vs-diamond-inner span {
-    font-size: 0.875rem;
-  }
-
-  .main-question {
-    font-size: 0.9rem;
-  }
-
-  .brand-quiniela {
     font-size: 1rem;
   }
 
+  .main-question {
+    font-size: 1rem;
+  }
+
+  .brand-quiniela {
+    font-size: 1.25rem;
+  }
+
   .brand-year-badge {
-    font-size: 0.5rem;
-    padding: 0.15rem 0.35rem;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
   }
 
   .countdown-split {
-    padding: 0.35rem 0.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .countdown-split-label {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
   }
 
   .countdown-split-number {
-    font-size: 0.9rem;
+    font-size: 1.25rem;
   }
 
   .countdown-split-text {
-    font-size: 0.35rem;
+    font-size: 0.4rem;
   }
 
   .countdown-split-sep {
-    font-size: 0.75rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .cta-btn-split {
-    padding: 0.6rem 1rem;
-    font-size: 0.75rem;
-    gap: 0.35rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
   }
 
   .cta-btn-split svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 
   .cta-info {
-    font-size: 0.5rem;
-    gap: 0.25rem;
+    font-size: 0.55rem;
+    gap: 0.35rem;
   }
 
   .event-details {
-    font-size: 0.45rem;
+    font-size: 0.5rem;
     gap: 0.15rem;
   }
 
@@ -5788,85 +5788,68 @@ body::before {
 
 @media (max-width: 480px) {
   .team-logo-large {
-    width: 70px;
-    height: 70px;
+    width: 75px;
+    height: 75px;
   }
 
   .team-title-large {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .team-city-large {
-    font-size: 0.4rem;
-  }
-
-  .team-conference-badge {
-    padding: 0.2rem 0.4rem;
-  }
-
-  .team-conference-badge span:first-child {
-    font-size: 0.55rem;
-  }
-
-  .team-record-badge {
-    font-size: 0.45rem;
-  }
-
-  .team-seed-badge {
-    font-size: 0.4rem;
-    padding: 0.15rem 0.4rem;
+    font-size: 0.5rem;
   }
 
   .center-overlay {
-    width: 45%;
+    width: 50%;
     max-width: 200px;
-    padding: 0.35rem;
+    padding: 0.75rem 0.35rem;
   }
 
   .nfl-logo {
-    width: 35px;
+    width: 50px;
   }
 
   .sb-numeral {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 
   .vs-diamond {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
   }
 
   .vs-diamond-inner span {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
   }
 
   .main-question {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
   }
 
   .brand-quiniela {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .countdown-split {
-    padding: 0.25rem 0.4rem;
+    padding: 0.4rem 0.6rem;
   }
 
   .countdown-split-number {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
 
   .cta-btn-split {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.6rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.75rem;
   }
 
   .cta-info {
-    font-size: 0.4rem;
+    font-size: 0.5rem;
   }
 
   .event-details {
-    font-size: 0.35rem;
+    font-size: 0.45rem;
   }
 }
 
