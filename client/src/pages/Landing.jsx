@@ -77,34 +77,6 @@ const CountdownTimer = () => {
   )
 }
 
-// Mobile Team Card Component
-function MobileTeamCard({ team, conference, delay, side }) {
-  return (
-    <motion.div
-      className={`mobile-team-card mobile-team-${side}`}
-      initial={{ opacity: 0, x: side === 'nfc' ? -50 : 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.6, type: 'spring' }}
-    >
-      <div className="mobile-team-badge">
-        <span>{conference}</span>
-        <span className="mobile-team-record">{team.record}</span>
-      </div>
-      <motion.img
-        src={team.logo}
-        alt={team.name}
-        className="mobile-team-logo"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      />
-      <div className="mobile-team-info">
-        <span className="mobile-team-city">{team.city}</span>
-        <span className="mobile-team-name">{team.name}</span>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function Landing() {
   const navigate = useNavigate()
 
@@ -114,8 +86,8 @@ export default function Landing() {
 
   return (
     <div className="landing-split">
-      {/* ============ DESKTOP VERSION ============ */}
-      <div className="landing-split-container desktop-only">
+      {/* Main Split Layout - Works on all screen sizes */}
+      <div className="landing-split-container">
         {/* Left Side - NFC Team */}
         <motion.div
           className="team-half team-half-nfc"
@@ -303,111 +275,6 @@ export default function Landing() {
             >
               #1 SEED AFC
             </motion.div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ============ MOBILE VERSION ============ */}
-      <div className="mobile-landing mobile-only">
-        {/* Background */}
-        <div className="mobile-bg">
-          <div className="mobile-bg-gradient" />
-          <div className="mobile-bg-pattern" />
-        </div>
-
-        {/* Header */}
-        <motion.div
-          className="mobile-header"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="mobile-brand">
-            <span className="mobile-brand-text">QUINIELA</span>
-            <span className="mobile-brand-year">2026</span>
-          </div>
-        </motion.div>
-
-        {/* Teams Section */}
-        <div className="mobile-teams-section">
-          <MobileTeamCard
-            team={TEAMS.nfc}
-            conference="NFC"
-            delay={0.2}
-            side="nfc"
-          />
-
-          {/* VS Badge */}
-          <motion.div
-            className="mobile-vs-container"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
-          >
-            <div className="mobile-vs-badge">
-              <span>VS</span>
-            </div>
-          </motion.div>
-
-          <MobileTeamCard
-            team={TEAMS.afc}
-            conference="AFC"
-            delay={0.3}
-            side="afc"
-          />
-        </div>
-
-        {/* Center Content */}
-        <motion.div
-          className="mobile-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-        >
-          <div className="mobile-nfl-logo">
-            <img src={NFL_LOGO} alt="NFL" />
-          </div>
-
-          <div className="mobile-super-bowl">
-            <span className="mobile-sb-label">SUPER BOWL</span>
-            <span className="mobile-sb-numeral">LX</span>
-          </div>
-
-          <h1 className="mobile-question">¿QUIÉN GANARÁ?</h1>
-        </motion.div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          className="mobile-bottom"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          <CountdownTimer />
-
-          <motion.button
-            className="mobile-cta-btn"
-            onClick={handleStart}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span>PARTICIPA AHORA</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </motion.button>
-
-          <div className="mobile-cta-info">
-            <span>8 preguntas</span>
-            <span className="mobile-dot">•</span>
-            <span>2 minutos</span>
-            <span className="mobile-dot">•</span>
-            <span>Premios</span>
-          </div>
-
-          <div className="mobile-event">
-            <span>📍 Levi's Stadium</span>
-            <span>📅 8 Feb, 2026</span>
           </div>
         </motion.div>
       </div>
