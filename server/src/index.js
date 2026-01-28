@@ -16,15 +16,24 @@ dotenv.config()
 
 const app = express()
 const httpServer = createServer(app)
+// Allow frontend origins (local dev + production Vercel URL)
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.FRONTEND_URL // Set this in Railway to your Vercel URL
+].filter(Boolean)
+
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? false : ['http://localhost:3000'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST']
   }
 })
 
 // Middleware
-app.use(cors())
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}))
 app.use(express.json())
 app.use(rateLimiter)
 

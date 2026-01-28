@@ -1,10 +1,13 @@
 import { io } from 'socket.io-client'
 
+// Use environment variable for production, fallback to same origin for dev
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || '/'
+
 let socket = null
 
 export const initSocket = () => {
   if (!socket) {
-    socket = io('/', {
+    socket = io(SOCKET_URL, {
       transports: ['websocket', 'polling']
     })
 
