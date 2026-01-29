@@ -137,7 +137,7 @@ function MobileHero({ onStart }) {
         animate={{ opacity: 1, y: 0 }}
       >
         <span className="mobile-brand">SUPER QUINIELA</span>
-        <span className="mobile-year">2026</span>
+        <span className="mobile-year-large">2026</span>
       </motion.header>
 
       {/* Main Content - Big Logos with VS */}
