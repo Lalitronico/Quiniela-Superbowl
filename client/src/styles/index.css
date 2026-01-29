@@ -5993,6 +5993,8 @@ body::before {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
+  width: 100%;
+  text-align: center;
 }
 
 .mobile-brand {
@@ -6025,6 +6027,7 @@ body::before {
   padding: 1.5rem 0;
   margin-top: auto;
   width: 100%;
+  text-align: center;
 }
 
 /* Teams Face-off - The main focus */
@@ -6218,6 +6221,7 @@ body::before {
 .mobile-cta-info {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
@@ -6237,6 +6241,8 @@ body::before {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 0 1.5rem;
+  width: 100%;
+  text-align: center;
 }
 
 /* Mobile Countdown */
@@ -6281,6 +6287,7 @@ body::before {
 .mobile-event-details {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 0.75rem;
