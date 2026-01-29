@@ -6032,9 +6032,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
   width: 100%;
-  max-width: 400px;
 }
 
 .mobile-team {
@@ -6042,7 +6040,8 @@ body::before {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  flex: 1;
+  width: 140px;
+  flex-shrink: 0;
 }
 
 .mobile-team-logo {
@@ -6107,6 +6106,8 @@ body::before {
   align-items: center;
   justify-content: center;
   z-index: 5;
+  width: 80px;
+  flex-shrink: 0;
 }
 
 .mobile-vs-glow {
