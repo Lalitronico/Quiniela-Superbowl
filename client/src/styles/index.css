@@ -934,13 +934,15 @@ body::before {
   background: #0a0a0a;
   position: relative;
   overflow-x: hidden;
+  isolation: isolate;
 }
 
 .confirmation-bg {
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
 .confirmation-orb {
@@ -975,7 +977,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: rgba(10, 10, 10, 0.8);
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -1704,6 +1706,7 @@ body::before {
               radial-gradient(circle at 70% 70%, rgba(0, 212, 255, 0.15) 0%, transparent 50%);
   animation: share-bg-pulse 8s ease-in-out infinite;
   pointer-events: none;
+  z-index: -1;
 }
 
 @keyframes share-bg-pulse {
@@ -5652,6 +5655,7 @@ body::before {
 /* ===== SPLIT SCREEN LANDING PAGE ===== */
 .landing-split {
   position: relative;
+  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   background: #0a0a0a;
@@ -5661,6 +5665,7 @@ body::before {
 .landing-split-container {
   position: relative;
   display: flex;
+  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -6472,10 +6477,12 @@ body::before {
 /* ===== RESPONSIVE UTILITIES ===== */
 .desktop-only {
   display: flex;
+  width: 100%;
 }
 
 .mobile-only {
   display: none;
+  width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -6485,6 +6492,7 @@ body::before {
 
   .mobile-only {
     display: flex !important;
+    width: 100%;
   }
 }
 

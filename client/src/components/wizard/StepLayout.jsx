@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useWizard, STEPS } from '../../context/WizardContext'
+import { useBrand } from '../../context/BrandContext'
 import ProgressBar from './ProgressBar'
 
 // Subtle grid pattern background
@@ -32,12 +33,13 @@ function AmbientGlow() {
 export default function StepLayout({ children, title, subtitle }) {
   const navigate = useNavigate()
   const { currentStep, nextStep, prevStep, canProceed, totalSteps } = useWizard()
+  const { brandSlug } = useBrand()
 
   const isLastStep = currentStep === totalSteps - 1
 
   const handleNext = () => {
     if (isLastStep) {
-      navigate('/confirmar')
+      navigate(`/${brandSlug}/confirmar`)
     } else {
       nextStep()
     }
@@ -45,7 +47,7 @@ export default function StepLayout({ children, title, subtitle }) {
 
   const handleBack = () => {
     if (currentStep === 0) {
-      navigate('/')
+      navigate(`/${brandSlug}`)
     } else {
       prevStep()
     }
@@ -61,7 +63,7 @@ export default function StepLayout({ children, title, subtitle }) {
       <header className="step-header">
         <div className="container flex items-center justify-between h-12 md:h-14">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate(`/${brandSlug}`)}
             className="logo-link"
           >
             <span className="font-display text-sm md:text-lg">SUPER QUINIELA</span>
