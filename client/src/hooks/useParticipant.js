@@ -1,42 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { getParticipant, registerParticipant } from '../services/api'
+import { useBrand } from '../context/BrandContext'
 
-const STORAGE_KEY = 'sb_participant_id'
+// Generate brand-specific storage key
+const getStorageKey = (brandSlug) => `sb_participant_${brandSlug}`
 
 export default function useParticipant() {
+  const { brandSlug } = useBrand()
   const [participant, setParticipant] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const loadParticipant = async () => {
-      const storedId = localStorage.getItem(STORAGE_KEY)
+  const storageKey = getStorageKey(brandSlug)
 
-      if (storedId) {
-        try {
-          const response = await getParticipant(storedId)
-          setParticipant(response.data)
-        } catch (err) {
-          localStorage.removeItem(STORAGE_KEY)
-          console.error('Failed to load participant:', err)
-        }
+  const loadParticipant = useCallback(async () => {
+    if (!brandSlug) return
+
+    const storedId = localStorage.getItem(storageKey)
+
+    if (storedId) {
+      try {
+        const response = await getParticipant(brandSlug, storedId)
+        setParticipant(response.data)
+      } catch (err) {
+        localStorage.removeItem(storageKey)
+        console.error('Failed to load participant:', err)
       }
-
-      setLoading(false)
     }
 
+    setLoading(false)
+  }, [brandSlug, storageKey])
+
+  useEffect(() => {
     loadParticipant()
-  }, [])
+  }, [loadParticipant])
 
   const register = async (data) => {
     setLoading(true)
     setError(null)
 
     try {
-      const response = await registerParticipant(data)
+      const response = await registerParticipant(brandSlug, data)
       const newParticipant = response.data
 
-      localStorage.setItem(STORAGE_KEY, newParticipant.id)
+      localStorage.setItem(storageKey, newParticipant.id)
       setParticipant(newParticipant)
 
       return newParticipant
@@ -50,10 +57,10 @@ export default function useParticipant() {
   }
 
   const refresh = async () => {
-    if (!participant?.id) return
+    if (!participant?.id || !brandSlug) return
 
     try {
-      const response = await getParticipant(participant.id)
+      const response = await getParticipant(brandSlug, participant.id)
       setParticipant(response.data)
     } catch (err) {
       console.error('Failed to refresh participant:', err)
@@ -61,7 +68,7 @@ export default function useParticipant() {
   }
 
   const logout = () => {
-    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(storageKey)
     setParticipant(null)
   }
 

@@ -5,12 +5,14 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 
+import brandRouter from './routes/brand.js'
 import participantsRouter from './routes/participants.js'
 import predictionsRouter from './routes/predictions.js'
 import questionsRouter from './routes/questions.js'
 import leaderboardRouter from './routes/leaderboard.js'
 import adminRouter from './routes/admin.js'
 import { rateLimiter } from './middleware/rateLimiter.js'
+import { brandContext } from './middleware/brandContext.js'
 import { initWebSocket } from './websocket/leaderboardEvents.js'
 
 dotenv.config()
@@ -71,17 +73,21 @@ app.use(express.json({ limit: '10kb' }))
 // Rate limiting
 app.use(rateLimiter)
 
-// Routes
-app.use('/api/participants', participantsRouter)
-app.use('/api/predictions', predictionsRouter)
-app.use('/api/questions', questionsRouter)
-app.use('/api/leaderboard', leaderboardRouter)
-app.use('/api/admin', adminRouter)
-
-// Health check
+// Health check (no brand required)
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
+
+// Questions are global (no brand required)
+app.use('/api/questions', questionsRouter)
+
+// Brand-scoped routes - all require :brand parameter
+// The brandContext middleware validates and loads the brand
+app.use('/api/:brand', brandContext, brandRouter)
+app.use('/api/:brand/participants', brandContext, participantsRouter)
+app.use('/api/:brand/predictions', brandContext, predictionsRouter)
+app.use('/api/:brand/leaderboard', brandContext, leaderboardRouter)
+app.use('/api/:brand/admin', brandContext, adminRouter)
 
 // Initialize WebSocket
 initWebSocket(io)
@@ -107,6 +113,7 @@ const PORT = process.env.PORT || 5000
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  console.log(`Multi-tenant API ready at /api/:brand/*`)
 })
 
 export { io }

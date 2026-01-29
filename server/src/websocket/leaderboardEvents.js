@@ -10,33 +10,52 @@ export function initWebSocket(io) {
       console.log('Client disconnected:', socket.id)
     })
 
-    // Join leaderboard room
-    socket.on('leaderboard:subscribe', () => {
-      socket.join('leaderboard')
+    // Join brand-specific leaderboard room
+    socket.on('leaderboard:subscribe', (brandSlug) => {
+      // Validate brand slug format
+      if (!brandSlug || typeof brandSlug !== 'string' || !/^[a-z0-9-]+$/.test(brandSlug)) {
+        console.warn(`[WS] Invalid brand slug for subscription: ${brandSlug}`)
+        return
+      }
+
+      const room = `leaderboard:${brandSlug}`
+      socket.join(room)
+      console.log(`[WS] Client ${socket.id} joined room: ${room}`)
     })
 
-    // Leave leaderboard room
-    socket.on('leaderboard:unsubscribe', () => {
-      socket.leave('leaderboard')
+    // Leave brand-specific leaderboard room
+    socket.on('leaderboard:unsubscribe', (brandSlug) => {
+      if (!brandSlug || typeof brandSlug !== 'string') return
+
+      const room = `leaderboard:${brandSlug}`
+      socket.leave(room)
+      console.log(`[WS] Client ${socket.id} left room: ${room}`)
     })
   })
 }
 
-export function emitLeaderboardUpdate(leaderboard) {
-  if (ioInstance) {
-    ioInstance.emit('leaderboard:update', leaderboard)
+// Emit leaderboard update to a specific brand's room
+export function emitLeaderboardUpdate(brandSlug, leaderboard) {
+  if (ioInstance && brandSlug) {
+    const room = `leaderboard:${brandSlug}`
+    ioInstance.to(room).emit('leaderboard:update', leaderboard)
+    console.log(`[WS] Emitted leaderboard:update to room: ${room}`)
   }
 }
 
-export function emitResultUpdate(result) {
-  if (ioInstance) {
-    ioInstance.emit('results:update', result)
+// Emit result update to a specific brand's room
+export function emitResultUpdate(brandSlug, result) {
+  if (ioInstance && brandSlug) {
+    const room = `leaderboard:${brandSlug}`
+    ioInstance.to(room).emit('results:update', result)
   }
 }
 
-export function emitCorrectPrediction(userId, questionId, points) {
-  if (ioInstance) {
-    ioInstance.emit('prediction:correct', {
+// Emit correct prediction notification to a specific brand's room
+export function emitCorrectPrediction(brandSlug, userId, questionId, points) {
+  if (ioInstance && brandSlug) {
+    const room = `leaderboard:${brandSlug}`
+    ioInstance.to(room).emit('prediction:correct', {
       userId,
       questionId,
       points

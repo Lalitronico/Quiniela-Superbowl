@@ -4,6 +4,7 @@ import { io } from 'socket.io-client'
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || '/'
 
 let socket = null
+let currentBrandRoom = null
 
 export const initSocket = () => {
   if (!socket) {
@@ -13,6 +14,10 @@ export const initSocket = () => {
 
     socket.on('connect', () => {
       console.log('Socket connected:', socket.id)
+      // Rejoin brand room if we had one
+      if (currentBrandRoom) {
+        socket.emit('leaderboard:subscribe', currentBrandRoom)
+      }
     })
 
     socket.on('disconnect', () => {
@@ -38,6 +43,28 @@ export const disconnectSocket = () => {
   if (socket) {
     socket.disconnect()
     socket = null
+    currentBrandRoom = null
+  }
+}
+
+// Subscribe to a brand-specific leaderboard room
+export const joinBrandRoom = (brandSlug) => {
+  const sock = getSocket()
+
+  // Leave previous room if different
+  if (currentBrandRoom && currentBrandRoom !== brandSlug) {
+    sock.emit('leaderboard:unsubscribe', currentBrandRoom)
+  }
+
+  currentBrandRoom = brandSlug
+  sock.emit('leaderboard:subscribe', brandSlug)
+}
+
+// Leave the current brand room
+export const leaveBrandRoom = () => {
+  if (currentBrandRoom && socket) {
+    socket.emit('leaderboard:unsubscribe', currentBrandRoom)
+    currentBrandRoom = null
   }
 }
 

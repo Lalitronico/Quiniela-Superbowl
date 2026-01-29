@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import storage from '../services/fileStorageService.js'
+import db from '../services/databaseService.js'
 import { strictRateLimiter } from '../middleware/rateLimiter.js'
 
-const router = Router()
+const router = Router({ mergeParams: true })
 
 // Get leaderboard (public, rate limited to prevent scraping)
 router.get('/', strictRateLimiter, async (req, res) => {
   try {
-    const leaderboard = await storage.getLeaderboard()
+    const leaderboard = await db.getLeaderboard(req.brandId)
     // Only return necessary public info
     res.json(leaderboard.map(p => ({
       id: p.id,

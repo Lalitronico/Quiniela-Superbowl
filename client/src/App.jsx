@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { WizardProvider } from './context/WizardContext'
+import { BrandProvider } from './context/BrandContext'
 
 // Landing loads immediately (critical for LCP)
 import Landing from './pages/Landing'
@@ -22,28 +23,37 @@ function PageLoader() {
   )
 }
 
-function AppRoutes() {
+// Brand-scoped routes wrapper
+function BrandRoutes() {
   const location = useLocation()
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Landing />} />
-          <Route path="/quiniela" element={<Quiniela />} />
-          <Route path="/confirmar" element={<Confirmation />} />
-          <Route path="*" element={<Landing />} />
-        </Routes>
-      </AnimatePresence>
-    </Suspense>
+    <BrandProvider>
+      <WizardProvider>
+        <Suspense fallback={<PageLoader />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Landing />} />
+              <Route path="/quiniela" element={<Quiniela />} />
+              <Route path="/confirmar" element={<Confirmation />} />
+              <Route path="*" element={<Landing />} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+      </WizardProvider>
+    </BrandProvider>
   )
 }
 
 function App() {
   return (
-    <WizardProvider>
-      <AppRoutes />
-    </WizardProvider>
+    <Routes>
+      {/* Redirect root to default brand */}
+      <Route path="/" element={<Navigate to="/default" replace />} />
+
+      {/* All brand routes */}
+      <Route path="/:brand/*" element={<BrandRoutes />} />
+    </Routes>
   )
 }
 

@@ -12,33 +12,36 @@ const api = axios.create({
   }
 })
 
-// Participants
-export const registerParticipant = (data) => api.post('/participants', data)
-export const getParticipant = (id) => api.get(`/participants/${id}`)
-export const getAllParticipants = () => api.get('/participants')
-
-// Questions
+// Questions (global - no brand required)
 export const getQuestions = () => api.get('/questions')
 
-// Predictions
-export const submitPredictions = (userId, predictions) =>
-  api.post('/predictions', { userId, predictions })
-export const getPredictions = (userId) => api.get(`/predictions/${userId}`)
-export const updatePredictions = (userId, predictions) =>
-  api.put(`/predictions/${userId}`, { predictions })
+// Brand info
+export const getBrandInfo = (brand) => api.get(`/${brand}/brand-info`)
 
-// Leaderboard
-export const getLeaderboard = () => api.get('/leaderboard')
+// Participants (brand-scoped)
+export const registerParticipant = (brand, data) => api.post(`/${brand}/participants`, data)
+export const getParticipant = (brand, id) => api.get(`/${brand}/participants/${id}`)
+export const getAllParticipants = (brand) => api.get(`/${brand}/participants`)
 
-// Admin
-export const submitResults = (results, apiKey) =>
-  api.post('/admin/results', { results }, {
+// Predictions (brand-scoped)
+export const submitPredictions = (brand, userId, predictions) =>
+  api.post(`/${brand}/predictions`, { userId, predictions })
+export const getPredictions = (brand, userId) => api.get(`/${brand}/predictions/${userId}`)
+export const updatePredictions = (brand, userId, predictions) =>
+  api.put(`/${brand}/predictions/${userId}`, { predictions })
+
+// Leaderboard (brand-scoped)
+export const getLeaderboard = (brand) => api.get(`/${brand}/leaderboard`)
+
+// Admin (brand-scoped)
+export const submitResults = (brand, results, apiKey) =>
+  api.post(`/${brand}/admin/results`, { results }, {
     headers: { 'x-api-key': apiKey }
   })
-export const calculateScores = (apiKey) =>
-  api.post('/admin/calculate', {}, {
+export const calculateScores = (brand, apiKey) =>
+  api.post(`/${brand}/admin/calculate`, {}, {
     headers: { 'x-api-key': apiKey }
   })
-export const getResults = () => api.get('/admin/results')
+export const getResults = (brand) => api.get(`/${brand}/admin/results`)
 
 export default api

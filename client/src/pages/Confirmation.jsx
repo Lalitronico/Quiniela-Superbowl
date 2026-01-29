@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useWizard, STEPS } from '../context/WizardContext'
+import { useBrand } from '../context/BrandContext'
 
 // Social Media Icons
 const WhatsAppIcon = () => (
@@ -243,6 +244,7 @@ function ConfettiParticle({ index }) {
 
 export default function Confirmation() {
   const navigate = useNavigate()
+  const { brandSlug } = useBrand()
   const { predictions, goToStep, getCompletedCount } = useWizard()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -254,7 +256,7 @@ export default function Confirmation() {
 
   const handleEdit = (stepIndex) => {
     goToStep(stepIndex)
-    navigate('/quiniela')
+    navigate(`/${brandSlug}/quiniela`)
   }
 
   const handleSubmit = async () => {
@@ -473,7 +475,7 @@ export default function Confirmation() {
           <div className="share-cta-buttons">
             <motion.button
               className="btn-success-secondary"
-              onClick={() => navigate('/ranking')}
+              onClick={() => navigate(`/${brandSlug}/ranking`)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -481,7 +483,7 @@ export default function Confirmation() {
             </motion.button>
             <motion.button
               className="btn-success-primary"
-              onClick={() => navigate('/')}
+              onClick={() => navigate(`/${brandSlug}`)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -517,7 +519,7 @@ export default function Confirmation() {
 
       {/* Header */}
       <header className="confirmation-header">
-        <button onClick={() => navigate('/')} className="confirmation-brand">
+        <button onClick={() => navigate(`/${brandSlug}`)} className="confirmation-brand">
           QUINIELA <span>2026</span>
         </button>
         <div className="confirmation-badge">SUPER BOWL LX</div>
@@ -707,7 +709,7 @@ export default function Confirmation() {
             </p>
           )}
 
-          <button className="back-link" onClick={() => navigate('/quiniela')}>
+          <button className="back-link" onClick={() => navigate(`/${brandSlug}/quiniela`)}>
             ← VOLVER A EDITAR
           </button>
         </motion.div>

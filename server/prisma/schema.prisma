@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Brands (Tenants) - Each brand is a separate tenant
+model Brand {
+  id                 String    @id @default(uuid()) @db.Uuid
+  slug               String    @unique @db.VarChar(50)
+  name               String    @db.VarChar(100)
+  logoUrl            String?   @map("logo_url") @db.VarChar(500)
+  primaryColor       String    @default("#3B82F6") @map("primary_color") @db.VarChar(7)
+  adminApiKey        String    @map("admin_api_key") @db.VarChar(100)
+  isActive           Boolean   @default(true) @map("is_active")
+  predictionsLockAt  DateTime? @map("predictions_lock_at") @db.Timestamptz
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  // Relations
+  participants Participant[]
+  predictions  Prediction[]
+  results      Result[]
+
+  @@map("brands")
+}
+
+// Questions - Global, shared across all brands
+model Question {
+  id          String   @id @default(uuid()) @db.Uuid
+  questionKey String   @unique @map("question_key") @db.VarChar(50)
+  category    String   @db.VarChar(50)
+  text        String   @db.Text
+  type        String   @db.VarChar(20)
+  options     Json?    @db.JsonB
+  difficulty  String   @default("medium") @db.VarChar(20)
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+
+  // Relations
+  predictions Prediction[]
+  results     Result[]
+
+  @@map("questions")
+}
+
+// Participants - Scoped to brand
+model Participant {
+  id                  String   @id @default(uuid()) @db.Uuid
+  brandId             String   @map("brand_id") @db.Uuid
+  name                String   @db.VarChar(100)
+  email               String   @db.VarChar(255)
+  avatar              String   @default("🏈") @db.VarChar(10)
+  score               Int      @default(0)
+  correctPredictions  Int      @default(0) @map("correct_predictions")
+  categoryScores      Json     @default("{}") @map("category_scores") @db.JsonB
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  brand       Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  predictions Prediction[]
+
+  // Unique email per brand
+  @@unique([brandId, email])
+  @@index([brandId])
+  @@map("participants")
+}
+
+// Predictions - Scoped to participant and brand
+model Prediction {
+  id            String   @id @default(uuid()) @db.Uuid
+  brandId       String   @map("brand_id") @db.Uuid
+  participantId String   @map("participant_id") @db.Uuid
+  questionId    String   @map("question_id") @db.Uuid
+  answer        Json     @db.JsonB
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  brand       Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  question    Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  // One prediction per participant per question
+  @@unique([participantId, questionId])
+  @@index([brandId])
+  @@index([participantId])
+  @@map("predictions")
+}
+
+// Results - Official answers, scoped to brand
+model Result {
+  id         String   @id @default(uuid()) @db.Uuid
+  brandId    String   @map("brand_id") @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  answer     Json     @db.JsonB
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  // Relations
+  brand    Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  // One result per brand per question
+  @@unique([brandId, questionId])
+  @@index([brandId])
+  @@map("results")
+}

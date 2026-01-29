@@ -1,4 +1,4 @@
-import storage from './fileStorageService.js'
+import db from './databaseService.js'
 
 // Difficulty multipliers
 const DIFFICULTY_MULTIPLIERS = {
@@ -68,10 +68,10 @@ function compareAnswers(prediction, actual, questionType) {
   return String(prediction).toLowerCase().trim() === String(actual).toLowerCase().trim()
 }
 
-export async function calculateParticipantScore(userId) {
-  const questions = await storage.getQuestions()
-  const results = await storage.getResults()
-  const userPredictionData = await storage.getPredictionsByUserId(userId)
+export async function calculateParticipantScore(brandId, participantId) {
+  const questions = await db.getQuestions()
+  const results = await db.getResults(brandId)
+  const userPredictionData = await db.getPredictionsByUserId(brandId, participantId)
 
   if (!userPredictionData?.predictions) {
     return { score: 0, correctPredictions: 0, categoryScores: {} }
@@ -141,23 +141,23 @@ export async function calculateParticipantScore(userId) {
   }
 }
 
-export async function calculateAllScores() {
-  const participants = await storage.getParticipants()
+export async function calculateAllScores(brandId) {
+  const participants = await db.getParticipants(brandId)
   let updated = 0
 
   for (const participant of participants) {
-    const { score, correctPredictions, categoryScores } = await calculateParticipantScore(participant.id)
-    await storage.updateParticipantScore(participant.id, score, correctPredictions, categoryScores)
+    const { score, correctPredictions, categoryScores } = await calculateParticipantScore(brandId, participant.id)
+    await db.updateParticipantScore(brandId, participant.id, score, correctPredictions, categoryScores)
     updated++
   }
 
   return { updated }
 }
 
-export async function checkPrediction(userId, questionId) {
-  const questions = await storage.getQuestions()
-  const results = await storage.getResults()
-  const userPredictionData = await storage.getPredictionsByUserId(userId)
+export async function checkPrediction(brandId, participantId, questionId) {
+  const questions = await db.getQuestions()
+  const results = await db.getResults(brandId)
+  const userPredictionData = await db.getPredictionsByUserId(brandId, participantId)
 
   const question = questions.find(q => q.id === questionId)
   if (!question) return null

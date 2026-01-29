@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getQuestions, getPredictions, submitPredictions, updatePredictions } from '../services/api'
+import { useBrand } from '../context/BrandContext'
 
 export default function usePredictions(userId) {
+  const { brandSlug } = useBrand()
   const [questions, setQuestions] = useState([])
   const [predictions, setPredictions] = useState({})
   const [loading, setLoading] = useState(true)
@@ -9,16 +11,19 @@ export default function usePredictions(userId) {
   const [error, setError] = useState(null)
 
   const loadData = useCallback(async () => {
+    if (!brandSlug) return
+
     setLoading(true)
     setError(null)
 
     try {
+      // Questions are global (no brand needed)
       const questionsResponse = await getQuestions()
       setQuestions(questionsResponse.data)
 
       if (userId) {
         try {
-          const predictionsResponse = await getPredictions(userId)
+          const predictionsResponse = await getPredictions(brandSlug, userId)
           setPredictions(predictionsResponse.data.predictions || {})
         } catch (err) {
           if (err.response?.status !== 404) {
@@ -31,7 +36,7 @@ export default function usePredictions(userId) {
     } finally {
       setLoading(false)
     }
-  }, [userId])
+  }, [brandSlug, userId])
 
   useEffect(() => {
     loadData()
@@ -43,14 +48,19 @@ export default function usePredictions(userId) {
       return false
     }
 
+    if (!brandSlug) {
+      setError('Brand not loaded')
+      return false
+    }
+
     setSaving(true)
     setError(null)
 
     try {
       if (Object.keys(predictions).length === 0) {
-        await submitPredictions(userId, newPredictions)
+        await submitPredictions(brandSlug, userId, newPredictions)
       } else {
-        await updatePredictions(userId, newPredictions)
+        await updatePredictions(brandSlug, userId, newPredictions)
       }
 
       setPredictions(newPredictions)

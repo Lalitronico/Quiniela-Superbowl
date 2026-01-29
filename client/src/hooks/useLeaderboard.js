@@ -1,28 +1,37 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getLeaderboard } from '../services/api'
-import { subscribeToLeaderboard } from '../services/socket'
+import { subscribeToLeaderboard, joinBrandRoom, leaveBrandRoom } from '../services/socket'
+import { useBrand } from '../context/BrandContext'
 
 export default function useLeaderboard() {
+  const { brandSlug } = useBrand()
   const [leaderboard, setLeaderboard] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   const loadLeaderboard = useCallback(async () => {
+    if (!brandSlug) return
+
     setLoading(true)
     setError(null)
 
     try {
-      const response = await getLeaderboard()
+      const response = await getLeaderboard(brandSlug)
       setLeaderboard(response.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Error cargando leaderboard')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [brandSlug])
 
   useEffect(() => {
+    if (!brandSlug) return
+
     loadLeaderboard()
+
+    // Join the brand-specific WebSocket room
+    joinBrandRoom(brandSlug)
 
     const unsubscribe = subscribeToLeaderboard((data) => {
       setLeaderboard(data)
@@ -30,8 +39,9 @@ export default function useLeaderboard() {
 
     return () => {
       unsubscribe()
+      leaveBrandRoom()
     }
-  }, [loadLeaderboard])
+  }, [brandSlug, loadLeaderboard])
 
   return {
     leaderboard,

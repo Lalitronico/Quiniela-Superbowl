@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useBrand } from '../context/BrandContext'
 
 // Team Configuration
 const TEAMS = {
@@ -120,7 +121,7 @@ const CountdownMobile = () => {
 }
 
 // Mobile Hero Layout - Stacked design with big logos
-function MobileHero({ onStart }) {
+function MobileHero({ onStart, brandName }) {
   return (
     <div className="mobile-hero">
       {/* Background with split colors */}
@@ -264,7 +265,7 @@ function MobileHero({ onStart }) {
 }
 
 // Desktop Layout (original split design)
-function DesktopHero({ onStart }) {
+function DesktopHero({ onStart, brandName }) {
   return (
     <div className="landing-split-container">
       {/* Left Side - NFC Team */}
@@ -462,21 +463,41 @@ function DesktopHero({ onStart }) {
 
 export default function Landing() {
   const navigate = useNavigate()
+  const { brand, brandSlug, loading } = useBrand()
 
   const handleStart = () => {
-    navigate('/quiniela')
+    navigate(`/${brandSlug}/quiniela`)
+  }
+
+  // Show loading state while brand loads
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--paper-dark)' }}>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: 'var(--cmyk-cyan)', borderTopColor: 'transparent' }} />
+          <p className="font-heading" style={{ color: 'var(--ink-muted)' }}>Cargando...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="landing-split">
+      {/* Brand logo overlay if brand has custom logo */}
+      {brand?.logoUrl && (
+        <div className="brand-logo-overlay">
+          <img src={brand.logoUrl} alt={brand.name} className="brand-custom-logo" />
+        </div>
+      )}
+
       {/* Mobile Layout - shown on small screens */}
       <div className="mobile-only">
-        <MobileHero onStart={handleStart} />
+        <MobileHero onStart={handleStart} brandName={brand?.name} />
       </div>
 
       {/* Desktop Layout - shown on larger screens */}
       <div className="desktop-only">
-        <DesktopHero onStart={handleStart} />
+        <DesktopHero onStart={handleStart} brandName={brand?.name} />
       </div>
     </div>
   )

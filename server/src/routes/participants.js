@@ -1,15 +1,14 @@
 import { Router } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import storage from '../services/fileStorageService.js'
+import db from '../services/databaseService.js'
 import { validateParticipant } from '../middleware/validation.js'
 import { registrationRateLimiter, strictRateLimiter } from '../middleware/rateLimiter.js'
 
-const router = Router()
+const router = Router({ mergeParams: true })
 
 // Get all participants (limited info, rate limited)
 router.get('/', strictRateLimiter, async (req, res) => {
   try {
-    const participants = await storage.getParticipants()
+    const participants = await db.getParticipants(req.brandId)
     // Only return public info (no emails)
     res.json(participants.map(p => ({
       id: p.id,
@@ -27,7 +26,7 @@ router.get('/', strictRateLimiter, async (req, res) => {
 // Get participant by ID (own profile only)
 router.get('/:id', async (req, res) => {
   try {
-    const participant = await storage.getParticipantById(req.params.id)
+    const participant = await db.getParticipantById(req.brandId, req.params.id)
 
     if (!participant) {
       // Generic error to prevent ID enumeration
@@ -55,11 +54,11 @@ router.post('/', registrationRateLimiter, validateParticipant, async (req, res) 
   try {
     const { name, email, avatar } = req.body
 
-    // Check if email already exists
-    const existing = await storage.getParticipantByEmail(email)
+    // Check if email already exists for this brand
+    const existing = await db.getParticipantByEmail(req.brandId, email)
     if (existing) {
       // Return existing user ID so they can continue (no enumeration risk since we return it)
-      console.log(`[INFO] Existing user login: ${email}`)
+      console.log(`[INFO] Existing user login: ${email} for brand: ${req.brand.slug}`)
       return res.status(200).json({
         id: existing.id,
         name: existing.name,
@@ -70,20 +69,16 @@ router.post('/', registrationRateLimiter, validateParticipant, async (req, res) 
       })
     }
 
-    const participant = {
-      id: uuidv4(),
+    const participant = await db.saveParticipant(req.brandId, {
       name: name.trim(),
       email: email.toLowerCase().trim(),
       avatar: avatar || '🏈',
       score: 0,
       correctPredictions: 0,
       categoryScores: {},
-      createdAt: new Date().toISOString()
-    }
+    })
 
-    await storage.saveParticipant(participant)
-
-    console.log(`[INFO] New participant registered: ${participant.id.slice(0, 8)}...`)
+    console.log(`[INFO] New participant registered: ${participant.id.slice(0, 8)}... for brand: ${req.brand.slug}`)
     res.status(201).json(participant)
   } catch (err) {
     console.error('Error creating participant:', err)

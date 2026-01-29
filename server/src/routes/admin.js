@@ -1,16 +1,16 @@
 import { Router } from 'express'
-import storage from '../services/fileStorageService.js'
+import db from '../services/databaseService.js'
 import scoring from '../services/scoringService.js'
-import { adminAuth } from '../middleware/adminAuth.js'
+import { brandAdminAuth } from '../middleware/adminAuth.js'
 import { validateResults } from '../middleware/validation.js'
 import { emitLeaderboardUpdate } from '../websocket/leaderboardEvents.js'
 import { strictRateLimiter } from '../middleware/rateLimiter.js'
 
-const router = Router()
+const router = Router({ mergeParams: true })
 
 // Audit logging for admin actions
-function logAdminAction(action, ip, details = {}) {
-  console.log(`[ADMIN AUDIT] ${new Date().toISOString()} | ${action} | IP: ${ip} | ${JSON.stringify(details)}`)
+function logAdminAction(action, ip, brand, details = {}) {
+  console.log(`[ADMIN AUDIT] ${new Date().toISOString()} | ${action} | Brand: ${brand} | IP: ${ip} | ${JSON.stringify(details)}`)
 }
 
 // Mask email for privacy (show only first 2 chars and domain)
@@ -24,7 +24,7 @@ function maskEmail(email) {
 // Get current results (public)
 router.get('/results', async (req, res) => {
   try {
-    const results = await storage.getResults()
+    const results = await db.getResults(req.brandId)
     res.json(results)
   } catch (err) {
     console.error('Error getting results:', err)
@@ -33,13 +33,13 @@ router.get('/results', async (req, res) => {
 })
 
 // Submit official results (protected + rate limited)
-router.post('/results', strictRateLimiter, adminAuth, validateResults, async (req, res) => {
+router.post('/results', strictRateLimiter, brandAdminAuth, validateResults, async (req, res) => {
   try {
     const { results } = req.body
 
-    logAdminAction('SUBMIT_RESULTS', req.ip, { questionsCount: Object.keys(results).length })
+    logAdminAction('SUBMIT_RESULTS', req.ip, req.brand.slug, { questionsCount: Object.keys(results).length })
 
-    await storage.saveResults(results)
+    await db.saveResults(req.brandId, results)
 
     res.json({ message: 'Resultados guardados', results })
   } catch (err) {
@@ -49,15 +49,15 @@ router.post('/results', strictRateLimiter, adminAuth, validateResults, async (re
 })
 
 // Calculate all scores (protected + rate limited)
-router.post('/calculate', strictRateLimiter, adminAuth, async (req, res) => {
+router.post('/calculate', strictRateLimiter, brandAdminAuth, async (req, res) => {
   try {
-    logAdminAction('CALCULATE_SCORES', req.ip)
+    logAdminAction('CALCULATE_SCORES', req.ip, req.brand.slug)
 
-    const result = await scoring.calculateAllScores()
+    const result = await scoring.calculateAllScores(req.brandId)
 
-    // Emit updated leaderboard via WebSocket
-    const leaderboard = await storage.getLeaderboard()
-    emitLeaderboardUpdate(leaderboard)
+    // Emit updated leaderboard via WebSocket (brand-specific room)
+    const leaderboard = await db.getLeaderboard(req.brandId)
+    emitLeaderboardUpdate(req.brand.slug, leaderboard)
 
     res.json({
       message: 'Puntuaciones calculadas',
@@ -70,17 +70,17 @@ router.post('/calculate', strictRateLimiter, adminAuth, async (req, res) => {
 })
 
 // Get all predictions (admin view - emails masked)
-router.get('/predictions', strictRateLimiter, adminAuth, async (req, res) => {
+router.get('/predictions', strictRateLimiter, brandAdminAuth, async (req, res) => {
   try {
-    logAdminAction('VIEW_PREDICTIONS', req.ip)
+    logAdminAction('VIEW_PREDICTIONS', req.ip, req.brand.slug)
 
-    const predictions = await storage.getPredictions()
-    const participants = await storage.getParticipants()
+    const predictions = await db.getPredictions(req.brandId)
+    const participants = await db.getParticipants(req.brandId)
 
-    const combined = Object.entries(predictions).map(([userId, data]) => {
-      const participant = participants.find(p => p.id === userId)
+    const combined = Object.entries(predictions).map(([participantId, data]) => {
+      const participant = participants.find(p => p.id === participantId)
       return {
-        userId,
+        participantId,
         name: participant?.name || 'Unknown',
         email: maskEmail(participant?.email), // Masked for privacy
         predictions: data.predictions,
