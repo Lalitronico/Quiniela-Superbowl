@@ -350,29 +350,66 @@ export default function Confirmation() {
           </motion.p>
         </motion.div>
 
-        {/* Prediction Card */}
+        {/* Prediction Card - Championship Style */}
         <motion.div
           className="share-card"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <div className="share-card-header">MI PREDICCIÓN</div>
-          {predictions.winner && (
-            <div className="share-card-team">
-              <img
-                src={TEAM_LOGOS[predictions.winner]}
-                alt={TEAM_NAMES[predictions.winner]}
-              />
-              <span className="share-card-team-name">{TEAM_NAMES[predictions.winner]}</span>
-              <span className="share-card-trophy">🏆</span>
-            </div>
-          )}
-          <div className="share-card-score">
-            {predictions.score.seahawks || '0'} - {predictions.score.patriots || '0'}
+          {/* Champion Section */}
+          <div className="share-card-champion">
+            <div className="share-card-label">MI CAMPEÓN</div>
+            {predictions.winner && (
+              <>
+                <div className="champion-logo-container">
+                  <div className="champion-logo-glow" />
+                  <motion.img
+                    src={TEAM_LOGOS[predictions.winner]}
+                    alt={TEAM_NAMES[predictions.winner]}
+                    className="champion-logo-large"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1, type: 'spring', stiffness: 150 }}
+                  />
+                  <div className="champion-crown">👑</div>
+                </div>
+                <motion.div
+                  className="champion-name"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 }}
+                >
+                  {TEAM_NAMES[predictions.winner]}
+                </motion.div>
+              </>
+            )}
           </div>
+
+          {/* Divider */}
+          <div className="share-card-divider">
+            <span>MARCADOR FINAL</span>
+          </div>
+
+          {/* Score Section with both teams */}
+          <div className="share-card-matchup">
+            <div className="matchup-team">
+              <img src={TEAM_LOGOS.seahawks} alt="Seahawks" />
+              <span className="matchup-abbr">SEA</span>
+              <span className="matchup-score seahawks-glow">{predictions.score.seahawks || '0'}</span>
+            </div>
+            <div className="matchup-vs">VS</div>
+            <div className="matchup-team">
+              <img src={TEAM_LOGOS.patriots} alt="Patriots" />
+              <span className="matchup-abbr">NE</span>
+              <span className="matchup-score patriots-glow">{predictions.score.patriots || '0'}</span>
+            </div>
+          </div>
+
+          {/* Footer */}
           <div className="share-card-footer">
-            {userName} · quiniela.supergana.fun
+            <span className="footer-user">{userName}</span>
+            <span className="footer-url">quiniela.supergana.fun</span>
           </div>
         </motion.div>
 

@@ -1753,22 +1753,24 @@ body::before {
   margin-top: 0.75rem;
 }
 
-/* Share Card (Prediction Display) */
+/* Share Card (Championship Style) */
 .share-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 2px solid rgba(255, 0, 128, 0.3);
+  background: linear-gradient(165deg, rgba(20, 10, 30, 0.95) 0%, rgba(10, 15, 25, 0.98) 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 24px;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem;
   width: 100%;
-  max-width: 340px;
+  max-width: 360px;
   text-align: center;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5),
-              0 0 60px rgba(255, 0, 128, 0.15),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7),
+              0 0 80px rgba(255, 215, 0, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   position: relative;
   z-index: 10;
+  overflow: hidden;
 }
 
 .share-card::before {
@@ -1776,70 +1778,199 @@ body::before {
   position: absolute;
   inset: -2px;
   border-radius: 26px;
-  background: linear-gradient(135deg, rgba(255, 0, 128, 0.5), transparent 50%, rgba(0, 212, 255, 0.5));
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.6), transparent 40%, transparent 60%, rgba(0, 212, 255, 0.4));
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
-.share-card-header {
+.share-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  animation: card-shine 4s ease-in-out infinite;
+}
+
+@keyframes card-shine {
+  0%, 100% { transform: translateX(-50%); }
+  50% { transform: translateX(50%); }
+}
+
+/* Champion Section */
+.share-card-champion {
+  padding-bottom: 1rem;
+}
+
+.share-card-label {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.7);
+  letter-spacing: 0.3em;
   margin-bottom: 1rem;
   text-transform: uppercase;
 }
 
-.share-card-team {
+.champion-logo-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.champion-logo-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  animation: glow-pulse 2.5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+.champion-logo-large {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.4))
+          drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+}
+
+.champion-crown {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  z-index: 2;
+  animation: crown-float 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+}
+
+@keyframes crown-float {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+  50% { transform: translateX(-50%) translateY(-5px) rotate(5deg); }
+}
+
+.champion-name {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
+  color: white;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Divider */
+.share-card-divider {
+  position: relative;
+  margin: 1rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
 }
 
-.share-card-team img {
-  width: 56px;
-  height: 56px;
+.share-card-divider::before,
+.share-card-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.share-card-divider span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.2em;
+  padding: 0 1rem;
+}
+
+/* Matchup Score Section */
+.share-card-matchup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+}
+
+.matchup-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 80px;
+}
+
+.matchup-team img {
+  width: 44px;
+  height: 44px;
   object-fit: contain;
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
 }
 
-.share-card-team-name {
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(1.2rem, 5vw, 1.5rem);
-  color: white;
-  letter-spacing: 0.02em;
-}
-
-.share-card-trophy {
-  font-size: 1.75rem;
-  animation: share-trophy-pulse 2s ease-in-out infinite;
-}
-
-@keyframes share-trophy-pulse {
-  0%, 100% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.15); filter: brightness(1.3); }
-}
-
-.share-card-score {
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(2rem, 8vw, 2.75rem);
-  background: linear-gradient(135deg, var(--cmyk-cyan), #00A3CC);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0.5rem 0;
+.matchup-abbr {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.1em;
 }
 
+.matchup-score {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.matchup-score.seahawks-glow {
+  color: #69BE28;
+  text-shadow: 0 0 20px rgba(105, 190, 40, 0.6);
+}
+
+.matchup-score.patriots-glow {
+  color: #C60C30;
+  text-shadow: 0 0 20px rgba(198, 12, 48, 0.6);
+}
+
+.matchup-vs {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 0 0.5rem;
+  align-self: center;
+  margin-top: 1.5rem;
+}
+
+/* Footer */
 .share-card-footer {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+}
+
+.footer-user {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-url {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(255, 215, 0, 0.5);
+  letter-spacing: 0.05em;
 }
 
 /* Share Buttons */
@@ -2003,16 +2134,34 @@ body::before {
   }
 
   .share-card {
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 1rem;
   }
 
-  .share-card-team img {
-    width: 48px;
-    height: 48px;
+  .champion-logo-large {
+    width: 90px;
+    height: 90px;
   }
 
-  .share-card-team-name {
-    font-size: 1.1rem;
+  .champion-crown {
+    font-size: 1.6rem;
+    top: -20px;
+  }
+
+  .champion-name {
+    font-size: 1.3rem;
+  }
+
+  .matchup-team img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .matchup-score {
+    font-size: 1.8rem;
+  }
+
+  .matchup-team {
+    min-width: 70px;
   }
 
   .share-btn {
@@ -2044,12 +2193,39 @@ body::before {
   }
 
   .share-card {
-    padding: 2rem 2.5rem;
-    max-width: 380px;
+    padding: 2rem;
+    max-width: 400px;
+  }
+
+  .champion-logo-large {
+    width: 130px;
+    height: 130px;
+  }
+
+  .champion-crown {
+    font-size: 2.5rem;
+    top: -30px;
+  }
+
+  .champion-name {
+    font-size: 2rem;
+  }
+
+  .matchup-team img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .matchup-score {
+    font-size: 2.6rem;
+  }
+
+  .matchup-team {
+    min-width: 100px;
   }
 
   .share-buttons {
-    max-width: 380px;
+    max-width: 400px;
     margin: 2rem 0;
   }
 
