@@ -1675,6 +1675,389 @@ body::before {
   border-radius: 2px;
 }
 
+/* ========================================
+   SHARE SUCCESS SCREEN - "Ya Participé"
+======================================== */
+
+.share-success-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a1a1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Background Glow */
+.share-success-screen::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(0, 212, 255, 0.15) 0%, transparent 50%);
+  animation: share-bg-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes share-bg-pulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+  50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+}
+
+/* Hero Section */
+.share-hero {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.share-hero-badge {
+  font-size: clamp(4rem, 15vw, 6rem);
+  display: block;
+  margin-bottom: 0.5rem;
+  animation: share-bounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255, 200, 100, 0.5));
+}
+
+@keyframes share-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.share-hero-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 12vw, 5rem);
+  background: linear-gradient(135deg, #FF0080, #FF4DA6 30%, #00D4FF 70%, #00A3CC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 60px rgba(255, 0, 128, 0.5);
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.share-hero-subtitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.3em;
+  margin-top: 0.75rem;
+}
+
+/* Share Card (Prediction Display) */
+.share-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 0, 128, 0.3);
+  border-radius: 24px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5),
+              0 0 60px rgba(255, 0, 128, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.share-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(255, 0, 128, 0.5), transparent 50%, rgba(0, 212, 255, 0.5));
+  z-index: -1;
+  opacity: 0.5;
+}
+
+.share-card-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.25em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.share-card-team {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.share-card-team img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+.share-card-team-name {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  color: white;
+  letter-spacing: 0.02em;
+}
+
+.share-card-trophy {
+  font-size: 1.75rem;
+  animation: share-trophy-pulse 2s ease-in-out infinite;
+}
+
+@keyframes share-trophy-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.15); filter: brightness(1.3); }
+}
+
+.share-card-score {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  background: linear-gradient(135deg, var(--cmyk-cyan), #00A3CC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0.5rem 0;
+  letter-spacing: 0.1em;
+}
+
+.share-card-footer {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+/* Share Buttons */
+.share-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 340px;
+  margin: 1.5rem 0;
+  position: relative;
+  z-index: 10;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.share-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.share-btn:hover::before {
+  opacity: 1;
+}
+
+.share-btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* WhatsApp Button */
+.share-btn-whatsapp {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+}
+
+.share-btn-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(37, 211, 102, 0.45);
+}
+
+/* Twitter/X Button */
+.share-btn-twitter {
+  background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
+  color: white;
+}
+
+.share-btn-twitter:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(29, 161, 242, 0.45);
+}
+
+/* Facebook Button */
+.share-btn-facebook {
+  background: linear-gradient(135deg, #4267B2, #365899);
+  color: white;
+}
+
+.share-btn-facebook:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(66, 103, 178, 0.45);
+}
+
+/* Copy Link Button */
+.share-btn-copy {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.share-btn-copy:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.1);
+}
+
+.share-btn-copy svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* CTA Section */
+.share-cta {
+  text-align: center;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.share-cta-text {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.share-cta-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.share-cta-buttons .btn-success-primary,
+.share-cta-buttons .btn-success-secondary {
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Toast Notification */
+.share-toast {
+  position: fixed;
+  bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 200, 83, 0.95);
+  color: white;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgba(0, 200, 83, 0.4);
+  z-index: 200;
+  white-space: nowrap;
+}
+
+/* Responsive Adjustments for Share Screen */
+@media (max-width: 480px) {
+  .share-success-screen {
+    padding: 1.5rem 1rem;
+  }
+
+  .share-hero-badge {
+    font-size: 4rem;
+  }
+
+  .share-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .share-card {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .share-card-team img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .share-card-team-name {
+    font-size: 1.1rem;
+  }
+
+  .share-btn {
+    padding: 0.8rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .share-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .share-cta-buttons .btn-success-primary,
+  .share-cta-buttons .btn-success-secondary {
+    width: 100%;
+  }
+}
+
+@media (min-width: 640px) {
+  .share-success-screen {
+    padding: 3rem 2rem;
+    justify-content: center;
+  }
+
+  .share-hero {
+    margin-bottom: 2rem;
+  }
+
+  .share-card {
+    padding: 2rem 2.5rem;
+    max-width: 380px;
+  }
+
+  .share-buttons {
+    max-width: 380px;
+    margin: 2rem 0;
+  }
+
+  .share-cta-buttons {
+    gap: 1rem;
+  }
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
   .input-score-large {
