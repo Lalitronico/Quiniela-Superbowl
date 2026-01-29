@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
@@ -16,11 +17,18 @@ dotenv.config()
 
 const app = express()
 const httpServer = createServer(app)
+
 // Allow frontend origins (local dev + production Vercel URL)
 const allowedOrigins = [
   'http://localhost:3000',
-  process.env.FRONTEND_URL // Set this in Railway to your Vercel URL
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
 ].filter(Boolean)
+
+// Validate FRONTEND_URL is set in production
+if (process.env.NODE_ENV === 'production' && !process.env.FRONTEND_URL) {
+  console.error('WARNING: FRONTEND_URL not set in production environment')
+}
 
 const io = new Server(httpServer, {
   cors: {
@@ -29,12 +37,38 @@ const io = new Server(httpServer, {
   }
 })
 
-// Middleware
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+// Security Middleware - Helmet for security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
 }))
-app.use(express.json())
+
+// CORS with explicit configuration
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+    return callback(new Error('No permitido por CORS'), false)
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'x-api-key']
+}))
+
+// Body parser with size limits
+app.use(express.json({ limit: '10kb' }))
+
+// Rate limiting
 app.use(rateLimiter)
 
 // Routes
@@ -52,10 +86,21 @@ app.get('/api/health', (req, res) => {
 // Initialize WebSocket
 initWebSocket(io)
 
-// Error handler
+// Error handler - Don't leak error details in production
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).json({ message: 'Error interno del servidor' })
+  // Log error details server-side only
+  console.error(`[${new Date().toISOString()}] Error:`, {
+    message: err.message,
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  })
+
+  // Send generic error to client
+  res.status(err.status || 500).json({
+    message: 'Error interno del servidor'
+  })
 })
 
 const PORT = process.env.PORT || 5000

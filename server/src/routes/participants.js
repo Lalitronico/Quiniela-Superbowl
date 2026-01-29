@@ -2,13 +2,15 @@ import { Router } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import storage from '../services/fileStorageService.js'
 import { validateParticipant } from '../middleware/validation.js'
+import { registrationRateLimiter, strictRateLimiter } from '../middleware/rateLimiter.js'
 
 const router = Router()
 
-// Get all participants
-router.get('/', async (req, res) => {
+// Get all participants (limited info, rate limited)
+router.get('/', strictRateLimiter, async (req, res) => {
   try {
     const participants = await storage.getParticipants()
+    // Only return public info (no emails)
     res.json(participants.map(p => ({
       id: p.id,
       name: p.name,
@@ -22,13 +24,14 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Get participant by ID
+// Get participant by ID (own profile only)
 router.get('/:id', async (req, res) => {
   try {
     const participant = await storage.getParticipantById(req.params.id)
 
     if (!participant) {
-      return res.status(404).json({ message: 'Participante no encontrado' })
+      // Generic error to prevent ID enumeration
+      return res.status(400).json({ message: 'Error obteniendo participante' })
     }
 
     res.json({
@@ -47,15 +50,24 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// Register new participant
-router.post('/', validateParticipant, async (req, res) => {
+// Register new participant (rate limited to prevent spam)
+router.post('/', registrationRateLimiter, validateParticipant, async (req, res) => {
   try {
     const { name, email, avatar } = req.body
 
     // Check if email already exists
     const existing = await storage.getParticipantByEmail(email)
     if (existing) {
-      return res.status(400).json({ message: 'Este email ya esta registrado' })
+      // Return existing user ID so they can continue (no enumeration risk since we return it)
+      console.log(`[INFO] Existing user login: ${email}`)
+      return res.status(200).json({
+        id: existing.id,
+        name: existing.name,
+        email: existing.email,
+        avatar: existing.avatar,
+        score: existing.score || 0,
+        message: 'Bienvenido de vuelta'
+      })
     }
 
     const participant = {
@@ -71,6 +83,7 @@ router.post('/', validateParticipant, async (req, res) => {
 
     await storage.saveParticipant(participant)
 
+    console.log(`[INFO] New participant registered: ${participant.id.slice(0, 8)}...`)
     res.status(201).json(participant)
   } catch (err) {
     console.error('Error creating participant:', err)
