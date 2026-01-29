@@ -10,6 +10,7 @@ import Landing from './pages/Landing'
 // Lazy load other pages (code splitting)
 const Quiniela = lazy(() => import('./pages/Quiniela'))
 const Confirmation = lazy(() => import('./pages/Confirmation'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 // Loading fallback
 function PageLoader() {
@@ -47,13 +48,18 @@ function BrandRoutes() {
 
 function App() {
   return (
-    <Routes>
-      {/* Redirect root to default brand */}
-      <Route path="/" element={<Navigate to="/default" replace />} />
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        {/* Admin panel (no brand required) */}
+        <Route path="/admin" element={<Admin />} />
 
-      {/* All brand routes */}
-      <Route path="/:brand/*" element={<BrandRoutes />} />
-    </Routes>
+        {/* Redirect root to default brand */}
+        <Route path="/" element={<Navigate to="/default" replace />} />
+
+        {/* All brand routes */}
+        <Route path="/:brand/*" element={<BrandRoutes />} />
+      </Routes>
+    </Suspense>
   )
 }
 
