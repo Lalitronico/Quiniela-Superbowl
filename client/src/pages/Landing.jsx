@@ -23,7 +23,7 @@ const TEAMS = {
 // NFL Shield Logo
 const NFL_LOGO = 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nfl.png&transparent=true'
 
-// Countdown component
+// Countdown component for desktop
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
@@ -77,6 +77,378 @@ const CountdownTimer = () => {
   )
 }
 
+// Compact countdown for mobile
+const CountdownMobile = () => {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+
+  useEffect(() => {
+    const targetDate = new Date('2026-02-08T18:30:00-08:00')
+
+    const updateCountdown = () => {
+      const now = new Date()
+      const difference = targetDate - now
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        })
+      }
+    }
+
+    updateCountdown()
+    const interval = setInterval(updateCountdown, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="mobile-countdown">
+      <span className="mobile-countdown-label">KICKOFF EN</span>
+      <div className="mobile-countdown-values">
+        <span className="mobile-countdown-num">{timeLeft.days}d</span>
+        <span className="mobile-countdown-sep">:</span>
+        <span className="mobile-countdown-num">{String(timeLeft.hours).padStart(2, '0')}h</span>
+        <span className="mobile-countdown-sep">:</span>
+        <span className="mobile-countdown-num">{String(timeLeft.minutes).padStart(2, '0')}m</span>
+        <span className="mobile-countdown-sep">:</span>
+        <span className="mobile-countdown-num">{String(timeLeft.seconds).padStart(2, '0')}s</span>
+      </div>
+    </div>
+  )
+}
+
+// Mobile Hero Layout - Stacked design with big logos
+function MobileHero({ onStart }) {
+  return (
+    <div className="mobile-hero">
+      {/* Background with split colors */}
+      <div className="mobile-hero-bg">
+        <div className="mobile-hero-bg-left" />
+        <div className="mobile-hero-bg-right" />
+        <div className="mobile-hero-bg-glow" />
+      </div>
+
+      {/* Compact Header */}
+      <motion.header
+        className="mobile-hero-header"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <span className="mobile-brand">SUPER QUINIELA</span>
+        <span className="mobile-year">2026</span>
+      </motion.header>
+
+      {/* Main Content - Big Logos with VS */}
+      <div className="mobile-hero-main">
+        {/* Teams Face-off */}
+        <motion.div
+          className="mobile-teams-faceoff"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          {/* NFC Team */}
+          <div className="mobile-team mobile-team-nfc">
+            <div className="mobile-team-logo">
+              <div className="mobile-logo-ring" />
+              <img src={TEAMS.nfc.logo} alt={TEAMS.nfc.name} />
+            </div>
+            <span className="mobile-team-name">{TEAMS.nfc.name}</span>
+          </div>
+
+          {/* VS Badge with glow */}
+          <div className="mobile-vs-container">
+            <div className="mobile-vs-glow" />
+            <motion.div
+              className="mobile-vs-badge"
+              animate={{
+                boxShadow: [
+                  '0 0 30px rgba(255,0,128,0.5), 0 0 60px rgba(0,212,255,0.3)',
+                  '0 0 50px rgba(255,0,128,0.7), 0 0 80px rgba(0,212,255,0.5)',
+                  '0 0 30px rgba(255,0,128,0.5), 0 0 60px rgba(0,212,255,0.3)'
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <span>VS</span>
+            </motion.div>
+          </div>
+
+          {/* AFC Team */}
+          <div className="mobile-team mobile-team-afc">
+            <div className="mobile-team-logo">
+              <div className="mobile-logo-ring" />
+              <img src={TEAMS.afc.logo} alt={TEAMS.afc.name} />
+            </div>
+            <span className="mobile-team-name">{TEAMS.afc.name}</span>
+          </div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.h1
+          className="mobile-hero-title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          ¿QUIÉN GANARÁ?
+        </motion.h1>
+
+        {/* Super Bowl badge */}
+        <motion.div
+          className="mobile-sb-badge"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <img src={NFL_LOGO} alt="NFL" className="mobile-nfl-logo" />
+          <span>SUPER BOWL LX</span>
+        </motion.div>
+      </div>
+
+      {/* CTA Section */}
+      <motion.div
+        className="mobile-hero-cta"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <motion.button
+          className="mobile-cta-btn"
+          onClick={onStart}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span>PARTICIPA AHORA</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </motion.button>
+
+        <div className="mobile-cta-info">
+          <span>8 preguntas</span>
+          <span className="mobile-dot">•</span>
+          <span>2 minutos</span>
+          <span className="mobile-dot">•</span>
+          <span>Premios</span>
+        </div>
+      </motion.div>
+
+      {/* Footer - Countdown & Details */}
+      <motion.footer
+        className="mobile-hero-footer"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+      >
+        <CountdownMobile />
+        <div className="mobile-event-details">
+          <span>📍 Levi's Stadium</span>
+          <span>📅 8 Feb 2026</span>
+        </div>
+      </motion.footer>
+    </div>
+  )
+}
+
+// Desktop Layout (original split design)
+function DesktopHero({ onStart }) {
+  return (
+    <div className="landing-split-container">
+      {/* Left Side - NFC Team */}
+      <motion.div
+        className="team-half team-half-nfc"
+        initial={{ x: '-100%' }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.8, type: 'spring', damping: 20 }}
+      >
+        <div className="team-half-bg">
+          <div className="team-half-gradient" />
+          <div className="team-half-pattern" />
+          <div className="team-half-glow" />
+        </div>
+
+        <div className="team-half-content">
+          <motion.div
+            className="team-conference-badge"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <span>{TEAMS.nfc.conference}</span>
+            <span className="team-record-badge">{TEAMS.nfc.record}</span>
+          </motion.div>
+
+          <motion.div
+            className="team-logo-large"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
+            whileHover={{ scale: 1.05, rotate: -2 }}
+          >
+            <div className="team-logo-ring-outer" />
+            <div className="team-logo-ring-inner" />
+            <img src={TEAMS.nfc.logo} alt={TEAMS.nfc.name} />
+          </motion.div>
+
+          <motion.div
+            className="team-name-large"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <span className="team-city-large">{TEAMS.nfc.city}</span>
+            <span className="team-title-large">{TEAMS.nfc.name}</span>
+          </motion.div>
+
+          <motion.div
+            className="team-seed-badge"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            #1 SEED NFC
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Center Overlay */}
+      <div className="center-overlay">
+        <motion.div
+          className="center-top"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+        >
+          <div className="brand-logo">
+            <span className="brand-quiniela">SUPER QUINIELA</span>
+            <span className="brand-year-badge">2026</span>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="center-middle"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <div className="nfl-logo-container">
+            <div className="nfl-logo-glow" />
+            <img src={NFL_LOGO} alt="NFL" className="nfl-logo" />
+          </div>
+
+          <div className="super-bowl-text">
+            <span className="sb-label">SUPER BOWL</span>
+            <span className="sb-numeral">LX</span>
+          </div>
+
+          <div className="vs-diamond">
+            <div className="vs-diamond-inner">
+              <span>VS</span>
+            </div>
+          </div>
+
+          <div className="title-section">
+            <h1 className="main-question">¿QUIÉN GANARÁ?</h1>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="center-bottom"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <CountdownTimer />
+
+          <motion.button
+            className="cta-btn-split"
+            onClick={onStart}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>PARTICIPA AHORA</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </motion.button>
+
+          <div className="cta-info">
+            <span>8 preguntas</span>
+            <span className="cta-dot">•</span>
+            <span>2 minutos</span>
+            <span className="cta-dot">•</span>
+            <span>Premios</span>
+          </div>
+
+          <div className="event-details">
+            <span>📍 Levi's Stadium, Santa Clara</span>
+            <span>📅 8 de Febrero, 2026</span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Right Side - AFC Team */}
+      <motion.div
+        className="team-half team-half-afc"
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.8, type: 'spring', damping: 20 }}
+      >
+        <div className="team-half-bg">
+          <div className="team-half-gradient" />
+          <div className="team-half-pattern" />
+          <div className="team-half-glow" />
+        </div>
+
+        <div className="team-half-content">
+          <motion.div
+            className="team-conference-badge"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <span>{TEAMS.afc.conference}</span>
+            <span className="team-record-badge">{TEAMS.afc.record}</span>
+          </motion.div>
+
+          <motion.div
+            className="team-logo-large"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
+            whileHover={{ scale: 1.05, rotate: 2 }}
+          >
+            <div className="team-logo-ring-outer" />
+            <div className="team-logo-ring-inner" />
+            <img src={TEAMS.afc.logo} alt={TEAMS.afc.name} />
+          </motion.div>
+
+          <motion.div
+            className="team-name-large"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <span className="team-city-large">{TEAMS.afc.city}</span>
+            <span className="team-title-large">{TEAMS.afc.name}</span>
+          </motion.div>
+
+          <motion.div
+            className="team-seed-badge"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            #1 SEED AFC
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function Landing() {
   const navigate = useNavigate()
 
@@ -86,197 +458,14 @@ export default function Landing() {
 
   return (
     <div className="landing-split">
-      {/* Main Split Layout - Works on all screen sizes */}
-      <div className="landing-split-container">
-        {/* Left Side - NFC Team */}
-        <motion.div
-          className="team-half team-half-nfc"
-          initial={{ x: '-100%' }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.8, type: 'spring', damping: 20 }}
-        >
-          <div className="team-half-bg">
-            <div className="team-half-gradient" />
-            <div className="team-half-pattern" />
-            <div className="team-half-glow" />
-          </div>
+      {/* Mobile Layout - shown on small screens */}
+      <div className="mobile-only">
+        <MobileHero onStart={handleStart} />
+      </div>
 
-          <div className="team-half-content">
-            <motion.div
-              className="team-conference-badge"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              <span>{TEAMS.nfc.conference}</span>
-              <span className="team-record-badge">{TEAMS.nfc.record}</span>
-            </motion.div>
-
-            <motion.div
-              className="team-logo-large"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
-              whileHover={{ scale: 1.05, rotate: -2 }}
-            >
-              <div className="team-logo-ring-outer" />
-              <div className="team-logo-ring-inner" />
-              <img src={TEAMS.nfc.logo} alt={TEAMS.nfc.name} />
-            </motion.div>
-
-            <motion.div
-              className="team-name-large"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <span className="team-city-large">{TEAMS.nfc.city}</span>
-              <span className="team-title-large">{TEAMS.nfc.name}</span>
-            </motion.div>
-
-            <motion.div
-              className="team-seed-badge"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              #1 SEED NFC
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Center Overlay */}
-        <div className="center-overlay">
-          <motion.div
-            className="center-top"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-          >
-            <div className="brand-logo">
-              <span className="brand-quiniela">SUPER QUINIELA</span>
-              <span className="brand-year-badge">2026</span>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="center-middle"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            <div className="nfl-logo-container">
-              <div className="nfl-logo-glow" />
-              <img src={NFL_LOGO} alt="NFL" className="nfl-logo" />
-            </div>
-
-            <div className="super-bowl-text">
-              <span className="sb-label">SUPER BOWL</span>
-              <span className="sb-numeral">LX</span>
-            </div>
-
-            <div className="vs-diamond">
-              <div className="vs-diamond-inner">
-                <span>VS</span>
-              </div>
-            </div>
-
-            <div className="title-section">
-              <h1 className="main-question">¿QUIÉN GANARÁ?</h1>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="center-bottom"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-          >
-            <CountdownTimer />
-
-            <motion.button
-              className="cta-btn-split"
-              onClick={handleStart}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>PARTICIPA AHORA</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </motion.button>
-
-            <div className="cta-info">
-              <span>8 preguntas</span>
-              <span className="cta-dot">•</span>
-              <span>2 minutos</span>
-              <span className="cta-dot">•</span>
-              <span>Premios</span>
-            </div>
-
-            <div className="event-details">
-              <span>📍 Levi's Stadium, Santa Clara</span>
-              <span>📅 8 de Febrero, 2026</span>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Side - AFC Team */}
-        <motion.div
-          className="team-half team-half-afc"
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.8, type: 'spring', damping: 20 }}
-        >
-          <div className="team-half-bg">
-            <div className="team-half-gradient" />
-            <div className="team-half-pattern" />
-            <div className="team-half-glow" />
-          </div>
-
-          <div className="team-half-content">
-            <motion.div
-              className="team-conference-badge"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              <span>{TEAMS.afc.conference}</span>
-              <span className="team-record-badge">{TEAMS.afc.record}</span>
-            </motion.div>
-
-            <motion.div
-              className="team-logo-large"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
-              whileHover={{ scale: 1.05, rotate: 2 }}
-            >
-              <div className="team-logo-ring-outer" />
-              <div className="team-logo-ring-inner" />
-              <img src={TEAMS.afc.logo} alt={TEAMS.afc.name} />
-            </motion.div>
-
-            <motion.div
-              className="team-name-large"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <span className="team-city-large">{TEAMS.afc.city}</span>
-              <span className="team-title-large">{TEAMS.afc.name}</span>
-            </motion.div>
-
-            <motion.div
-              className="team-seed-badge"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              #1 SEED AFC
-            </motion.div>
-          </div>
-        </motion.div>
+      {/* Desktop Layout - shown on larger screens */}
+      <div className="desktop-only">
+        <DesktopHero onStart={handleStart} />
       </div>
     </div>
   )
